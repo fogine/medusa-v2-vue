@@ -1,12 +1,11 @@
 import { VueQueryPlugin, VueQueryPluginOptions } from '@tanstack/vue-query';
-import Medusa from '@medusajs/medusa-js';
+import Medusa from '@medusajs/js-sdk';
 import { App } from 'vue';
 
 import { medusaKey } from './injectionSymbols';
 
 interface MedusaVueClientProps {
   baseUrl: string;
-  maxRetries?: number;
   /**
    * Authentication token
    */
@@ -26,8 +25,7 @@ export const createMedusaVueClient = (options: MedusaVueClientProps) => {
       const medusa = new Medusa({
         baseUrl: options.baseUrl,
         apiKey: options.apiKey,
-        publishableApiKey: options.publishableApiKey,
-        maxRetries: options.maxRetries || 1,
+        publishableKey: options.publishableApiKey,
       });
 
       const defaultVueQueryPluginOptions: VueQueryPluginOptions = {

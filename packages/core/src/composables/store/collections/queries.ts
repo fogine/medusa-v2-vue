@@ -1,9 +1,9 @@
 import {
-  StoreCollectionsListRes,
-  StoreCollectionsRes,
-  StoreGetCollectionsParams,
-} from '@medusajs/medusa';
-import { Response } from '@medusajs/medusa-js';
+    StoreCollectionResponse,
+    StoreCollectionFilters,
+    StoreCollectionListResponse,
+    FindParams
+} from '@medusajs/types';
 import { useQuery } from '@tanstack/vue-query';
 import { useMedusa } from '../../../useApi';
 import { UseQueryOptionsWrapper } from '../../../types';
@@ -18,7 +18,7 @@ type CollectionQueryKey = typeof collectionKeys;
 export const useCollection = (
   id: string,
   options?: UseQueryOptionsWrapper<
-    Response<StoreCollectionsRes>,
+    StoreCollectionResponse,
     Error,
     ReturnType<CollectionQueryKey['detail']>
   >
@@ -26,16 +26,16 @@ export const useCollection = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     collectionKeys.detail(id),
-    () => client.collections.retrieve(id),
+    () => client.store.collection.retrieve(id),
     options
   );
   return { data, ...rest } as const;
 };
 
 export const useCollections = (
-  query?: StoreGetCollectionsParams,
+  query?: StoreCollectionFilters & FindParams,
   options?: UseQueryOptionsWrapper<
-    Response<StoreCollectionsListRes>,
+    StoreCollectionListResponse,
     Error,
     ReturnType<CollectionQueryKey['list']>
   >
@@ -43,7 +43,7 @@ export const useCollections = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     collectionKeys.list(query),
-    () => client.collections.list(query),
+    () => client.store.collection.list(query),
     options
   );
   return { data, ...rest } as const;

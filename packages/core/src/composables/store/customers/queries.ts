@@ -1,10 +1,9 @@
 import {
-  StoreCustomersListOrdersRes,
-  StoreCustomersRes,
-  StoreGetCustomersCustomerOrdersParams,
-} from '@medusajs/medusa';
+    StoreCustomerResponse,
+    StoreOrderFilters,
+    StoreOrderListResponse
+} from '@medusajs/types';
 import { useQuery } from '@tanstack/vue-query';
-import { Response } from '@medusajs/medusa-js';
 import { useMedusa } from '../../../useApi';
 import { UseQueryOptionsWrapper } from '../../../types';
 import { queryKeysFactory } from '../../utils/index';
@@ -20,7 +19,7 @@ type CustomerQueryKey = typeof customerKeys;
 
 export const useMeCustomer = (
   options?: UseQueryOptionsWrapper<
-    Response<StoreCustomersRes>,
+    StoreCustomerResponse,
     Error,
     ReturnType<CustomerQueryKey['detail']>
   >
@@ -28,16 +27,16 @@ export const useMeCustomer = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     customerKeys.detail('me'),
-    () => client.customers.retrieve(),
+    () => client.store.customer.retrieve(),
     options
   );
   return { data, ...rest } as const;
 };
 
 export const useCustomerOrders = (
-  query: StoreGetCustomersCustomerOrdersParams = { limit: 10, offset: 0 },
+  query: StoreOrderFilters = { limit: 10, offset: 0 },
   options?: UseQueryOptionsWrapper<
-    Response<StoreCustomersListOrdersRes>,
+    StoreOrderListResponse,
     Error,
     ReturnType<CustomerQueryKey['orders']>
   >
@@ -45,7 +44,7 @@ export const useCustomerOrders = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     customerKeys.orders('me'),
-    () => client.customers.listOrders(query),
+    () => client.store.order.list(query),
     options
   );
 

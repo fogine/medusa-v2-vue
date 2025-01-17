@@ -1,8 +1,7 @@
 import {
-  StorePostCustomersCustomerAcceptClaimReq,
-  StorePostCustomersCustomerOrderClaimReq,
-} from '@medusajs/medusa';
-import { Response } from '@medusajs/medusa-js';
+    StoreRequestOrderTransfer,
+    StoreOrderResponse,
+} from '@medusajs/types';
 import {
   UseMutationOptions,
   useMutation,
@@ -12,11 +11,12 @@ import { orderKeys } from './queries';
 import { useMedusa } from '../../../useApi';
 import { buildOptions } from '../../utils/buildOptions';
 
-export const useRequestOrderAccess = (
+export const useRequestOrderTransfer = (
+  orderId: string,
   options?: UseMutationOptions<
-    Response<{}>,
+    StoreOrderResponse,
     Error,
-    StorePostCustomersCustomerOrderClaimReq,
+    StoreRequestOrderTransfer,
     unknown
   >
 ) => {
@@ -24,16 +24,18 @@ export const useRequestOrderAccess = (
   const queryClient = useQueryClient();
 
   return useMutation(
-    (payload: StorePostCustomersCustomerOrderClaimReq) =>
-      client.orders.requestCustomerOrders(payload),
+    (payload: StoreRequestOrderTransfer) =>
+      client.store.order.requestTransfer(orderId, payload),
     buildOptions(queryClient, [orderKeys.all], options)
   );
 };
-export const useGrantOrderAccess = (
+
+export const useCancelOrderTransfer = (
+  orderId: string,
   options?: UseMutationOptions<
-    Response<{}>,
+    StoreOrderResponse,
     Error,
-    StorePostCustomersCustomerAcceptClaimReq,
+    void,
     unknown
   >
 ) => {
@@ -41,8 +43,8 @@ export const useGrantOrderAccess = (
   const queryClient = useQueryClient();
 
   return useMutation(
-    (payload: StorePostCustomersCustomerAcceptClaimReq) =>
-      client.orders.confirmRequest(payload),
+    () =>
+      client.store.order.cancelTransfer(orderId),
     buildOptions(queryClient, [orderKeys.all], options)
   );
 };

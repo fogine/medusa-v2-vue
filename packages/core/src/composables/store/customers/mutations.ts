@@ -1,38 +1,38 @@
 import {
-  StoreCustomersRes,
-  StorePostCustomersCustomerReq,
-  StorePostCustomersReq,
-} from '@medusajs/medusa';
+    StoreCreateCustomer,
+    StoreCustomerResponse,
+    StoreUpdateCustomer,
+} from '@medusajs/types';
 import { useMutation, UseMutationOptions } from '@tanstack/vue-query';
 import { useMedusa } from '../../../useApi';
 
 export const useCreateCustomer = (
   options?: UseMutationOptions<
-    StoreCustomersRes,
+    StoreCustomerResponse,
     Error,
-    StorePostCustomersReq,
+    StoreCreateCustomer,
     unknown
   >
 ) => {
   const { client } = useMedusa();
   return useMutation(
-    (data: StorePostCustomersReq) => client.customers.create(data),
+    (data: StoreCreateCustomer) => client.store.customer.create(data),
     options
   );
 };
 
 export const useUpdateMe = (
   options?: UseMutationOptions<
-    StoreCustomersRes,
+    StoreCustomerResponse,
     Error,
-    { id: string } & StorePostCustomersCustomerReq,
+    { id: string } & StoreUpdateCustomer,
     unknown
   >
 ) => {
   const { client } = useMedusa();
   return useMutation(
-    ({ id, ...data }: { id: string } & StorePostCustomersCustomerReq) =>
-      client.customers.update(data),
+    (data: StoreUpdateCustomer) =>
+      client.store.customer.update(data),
     options
   );
 };

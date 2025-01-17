@@ -2,18 +2,23 @@ import { queryKeysFactory } from '../../utils/index';
 import { UseQueryOptionsWrapper } from '../../../types';
 import { useQuery } from '@tanstack/vue-query';
 import { useMedusa } from '../../../useApi';
-import { StoreRegionsRes, StoreRegionsListRes } from '@medusajs/medusa';
-import { Response } from '@medusajs/medusa-js';
+import {
+    StoreRegionFilters,
+    FindParams,
+    StoreRegionListResponse,
+    StoreRegionResponse
+} from '@medusajs/types';
 
 const REGIONS_QUERY_KEY = `regions` as const;
 
-const regionsKey = queryKeysFactory(REGIONS_QUERY_KEY);
+const regionsKey = queryKeysFactory<typeof REGIONS_QUERY_KEY, StoreRegionFilters & FindParams>(REGIONS_QUERY_KEY);
 
 type RegionQueryType = typeof regionsKey;
 
 export const useRegions = (
+  query?: StoreRegionFilters & FindParams,
   options?: UseQueryOptionsWrapper<
-    Response<StoreRegionsListRes>,
+    StoreRegionListResponse,
     Error,
     ReturnType<RegionQueryType['lists']>
   >
@@ -21,7 +26,7 @@ export const useRegions = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     regionsKey.lists(),
-    () => client.regions.list(),
+    () => client.store.region.list(query),
     options
   );
 
@@ -31,7 +36,7 @@ export const useRegions = (
 export const useRegion = (
   id: string,
   options?: UseQueryOptionsWrapper<
-    Response<StoreRegionsRes>,
+    StoreRegionResponse,
     Error,
     ReturnType<RegionQueryType['detail']>
   >
@@ -39,7 +44,7 @@ export const useRegion = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     regionsKey.detail(id),
-    () => client.regions.retrieve(id),
+    () => client.store.region.retrieve(id),
     options
   );
   return { data, ...rest } as const;

@@ -1,61 +1,53 @@
-import {
-  StoreCartsRes,
-  StorePostCartsCartLineItemsReq,
-  StorePostCartsCartLineItemsItemReq,
-} from '@medusajs/medusa';
+import {StoreCartResponse, StoreAddCartLineItem, StoreLineItemDeleteResponse, StoreUpdateCartLineItem} from '@medusajs/types';
 import { useMutation, UseMutationOptions } from '@tanstack/vue-query';
 import { useMedusa } from '../../../useApi';
 
 export const useCreateLineItem = (
   cartId: string,
   options?: UseMutationOptions<
-    StoreCartsRes,
+    StoreCartResponse,
     Error,
-    StorePostCartsCartLineItemsReq,
+    StoreAddCartLineItem,
     unknown
   >
 ) => {
   const { client } = useMedusa();
   return useMutation(
-    (data: StorePostCartsCartLineItemsReq) =>
-      client.carts.lineItems.create(cartId, data),
-    options
-  );
-};
-
-export const useUpdateLineItem = (
-  cartId: string,
-  options?: UseMutationOptions<
-    StoreCartsRes,
-    Error,
-    StorePostCartsCartLineItemsItemReq & { lineId: string },
-    unknown
-  >
-) => {
-  const { client } = useMedusa();
-  return useMutation(
-    ({
-      lineId,
-      ...data
-    }: StorePostCartsCartLineItemsItemReq & { lineId: string }) =>
-      client.carts.lineItems.update(cartId, lineId, data),
+    (data: StoreAddCartLineItem) => client.store.cart.createLineItem(cartId, data),
     options
   );
 };
 
 export const useDeleteLineItem = (
   cartId: string,
+  lineItemId: string,
   options?: UseMutationOptions<
-    StoreCartsRes,
+    StoreLineItemDeleteResponse,
     Error,
-    { lineId: string },
+    void,
     unknown
   >
 ) => {
   const { client } = useMedusa();
   return useMutation(
-    ({ lineId }: { lineId: string }) =>
-      client.carts.lineItems.delete(cartId, lineId),
+    () => client.store.cart.deleteLineItem(cartId, lineItemId),
+    options
+  );
+};
+
+export const useUpdateLineItem = (
+  cartId: string,
+  lineItemId: string,
+  options?: UseMutationOptions<
+    StoreCartResponse,
+    Error,
+    StoreUpdateCartLineItem,
+    unknown
+  >
+) => {
+  const { client } = useMedusa();
+  return useMutation(
+    (data: StoreUpdateCartLineItem) => client.store.cart.updateLineItem(cartId, lineItemId, data),
     options
   );
 };

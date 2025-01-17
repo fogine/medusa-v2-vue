@@ -1,8 +1,7 @@
 import {
-  StoreGetProductTypesParams,
-  StoreProductTypesListRes,
-} from '@medusajs/medusa';
-import { Response } from '@medusajs/medusa-js';
+    AdminProductTypeListResponse,
+    AdminProductTypeListParams,
+} from '@medusajs/types';
 import { useQuery } from '@tanstack/vue-query';
 import { useMedusa } from '../../../useApi';
 import { UseQueryOptionsWrapper } from '../../../types';
@@ -15,9 +14,9 @@ export const productTypeKeys = queryKeysFactory(PRODUCT_TYPES_QUERY_KEY);
 type ProductTypesQueryKeys = typeof productTypeKeys;
 
 export const useProductTypes = (
-  query?: StoreGetProductTypesParams,
+  query?: AdminProductTypeListParams,
   options?: UseQueryOptionsWrapper<
-    Response<StoreProductTypesListRes>,
+    AdminProductTypeListResponse,
     Error,
     ReturnType<ProductTypesQueryKeys['list']>
   >
@@ -25,7 +24,7 @@ export const useProductTypes = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     productTypeKeys.list(query),
-    () => client.productTypes.list(query),
+    () => client.admin.productType.list(query),
     options
   );
   return { data, ...rest } as const;

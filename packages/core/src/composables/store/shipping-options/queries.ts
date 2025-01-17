@@ -3,10 +3,9 @@ import { UseQueryOptionsWrapper } from '../../../types';
 import { useQuery } from '@tanstack/vue-query';
 import { useMedusa } from '../../../useApi';
 import {
-  StoreShippingOptionsListRes,
-  StoreGetShippingOptionsParams,
-} from '@medusajs/medusa';
-import { Response } from '@medusajs/medusa-js';
+    StoreGetShippingOptionList,
+    StoreShippingOptionListResponse
+} from '@medusajs/types';
 
 const SHIPPING_OPTION_QUERY_KEY = `shipping_options` as const;
 
@@ -17,27 +16,11 @@ const shippingOptionKey = {
 
 type ShippingOptionQueryKey = typeof shippingOptionKey;
 
-export const useShippingOptions = (
-  query?: StoreGetShippingOptionsParams,
-  options?: UseQueryOptionsWrapper<
-    Response<StoreShippingOptionsListRes>,
-    Error,
-    ReturnType<ShippingOptionQueryKey['list']>
-  >
-) => {
-  const { client } = useMedusa();
-  const { data, ...rest } = useQuery(
-    shippingOptionKey.list(query),
-    async () => client.shippingOptions.list(query),
-    options
-  );
-  return { data, ...rest } as const;
-};
-
 export const useCartShippingOptions = (
   cartId: string,
+  query?: StoreGetShippingOptionList,
   options?: UseQueryOptionsWrapper<
-    Response<StoreShippingOptionsListRes>,
+    StoreShippingOptionListResponse,
     Error,
     ReturnType<ShippingOptionQueryKey['cart']>
   >
@@ -45,7 +28,10 @@ export const useCartShippingOptions = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     shippingOptionKey.cart(cartId),
-    async () => client.shippingOptions.listCartOptions(cartId),
+    async () => client.store.fulfillment.listCartOptions({
+        cart_id: cartId,
+        ...query
+    }),
     options
   );
   return { data, ...rest } as const;
