@@ -1,1921 +1,1404 @@
-import { rest } from "msw"
+import { http, HttpResponse } from 'msw';
 import { fixtures } from "../data"
 
 export const adminHandlers = [
-  rest.post("/admin/batch-jobs/", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        batch_job: {
-          ...fixtures.get("batch_job"),
-          ...body,
-        },
-      })
-    )
+  http.post("/admin/batch-jobs/", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>;
+
+      return HttpResponse.json({
+          batch_job: {
+              ...fixtures.get("batch_job"),
+              ...body,
+          },
+      }, { status: 200 });
   }),
 
-  rest.get("/admin/batch-jobs/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/batch-jobs/", async(ctx) => {
+    return HttpResponse.json({
         batch_jobs: fixtures.list("batch_job"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/batch-jobs/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/batch-jobs/:id", async(ctx) => {
+    return HttpResponse.json({
         batch_job: fixtures.get("batch_job"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/batch-jobs/:id/confirm", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/batch-jobs/:id/confirm", async(ctx) => {
+    return HttpResponse.json({
         batch_job: fixtures.get("batch_job"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/batch-jobs/:id/cancel", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/batch-jobs/:id/cancel", async(ctx) => {
+    return HttpResponse.json({
         batch_job: fixtures.get("batch_job"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/collections/", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        collection: {
-          ...fixtures.get("product_collection"),
-          ...body,
-        },
-      })
-    )
+  http.post("/admin/collections/", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+        return HttpResponse.json({
+            collection: {
+              ...fixtures.get("product_collection"),
+              ...body,
+            },
+        }, { status: 200 });
   }),
 
-  rest.get("/admin/collections/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/collections/", async(ctx) => {
+    return HttpResponse.json({
         collections: fixtures.list("product_collection"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/collections/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/collections/:id", async(ctx) => {
+    return HttpResponse.json({
         collection: fixtures.get("product_collection"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/collections/:id", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        collection: {
-          ...fixtures.get("product_collection"),
-          ...body,
-          id: req.params.id,
-        },
-      })
-    )
+  http.post("/admin/collections/:id", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+
+        return HttpResponse.json({
+            collection: {
+              ...fixtures.get("product_collection"),
+              ...body,
+              id: ctx.params.id,
+            },
+        }, { status: 200 });
   }),
 
-  rest.delete("/admin/collections/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: req.params.id,
+  http.delete("/admin/collections/:id", async(ctx) => {
+    return HttpResponse.json({
+        id: ctx.params.id,
         object: "collection",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/collections/:id/products/batch", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/collections/:id/products/batch", async(ctx) => {
+    return HttpResponse.json({
         collection: {
           ...fixtures.get("product_collection"),
           products: [fixtures.get("product")],
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/collections/:id/products/batch", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: req.params.id,
+  http.delete("/admin/collections/:id/products/batch", async(ctx) => {
+    return HttpResponse.json({
+        id: ctx.params.id,
         object: "product-collection",
         removed_products: [fixtures.get("product").id],
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/gift-cards/", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        gift_card: {
-          ...fixtures.get("gift_card"),
-          ...body,
-        },
-      })
-    )
+  http.post("/admin/gift-cards/", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+        return HttpResponse.json({
+            gift_card: {
+              ...fixtures.get("gift_card"),
+              ...body,
+            },
+        }, { status: 200 });
   }),
 
-  rest.get("/admin/gift-cards/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/gift-cards/", async(ctx) => {
+    return HttpResponse.json({
         gift_cards: fixtures.list("gift_card"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/gift-cards/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/gift-cards/:id", async(ctx) => {
+    return HttpResponse.json({
         gift_card: fixtures.get("gift_card"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/gift-cards/:id", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        gift_card: {
-          ...fixtures.get("gift_card"),
-          ...body,
-          id: req.params.id,
-        },
-      })
-    )
+  http.post("/admin/gift-cards/:id", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+
+        return HttpResponse.json({
+            gift_card: {
+              ...fixtures.get("gift_card"),
+              ...body,
+              id: ctx.params.id,
+            },
+        }, { status: 200 });
   }),
 
-  rest.delete("/admin/gift-cards/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: req.params.id,
+  http.delete("/admin/gift-cards/:id", async(ctx) => {
+    return HttpResponse.json({
+        id: ctx.params.id,
         object: "gift_card",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/notes/", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        note: {
-          ...fixtures.get("note"),
-          ...body,
-        },
-      })
-    )
+  http.post("/admin/notes/", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+
+        return HttpResponse.json({
+            note: {
+              ...fixtures.get("note"),
+              ...body,
+            },
+        }, { status: 200 });
   }),
 
-  rest.get("/admin/notes/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/notes/", async(ctx) => {
+    return HttpResponse.json({
         notes: fixtures.list("note"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/notes/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/notes/:id", async(ctx) => {
+    return HttpResponse.json({
         note: fixtures.get("note"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/notes/:id", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        note: {
-          ...fixtures.get("note"),
-          ...body,
-          id: req.params.id,
-        },
-      })
-    )
+  http.post("/admin/notes/:id", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+
+        return HttpResponse.json({
+            note: {
+              ...fixtures.get("note"),
+              ...body,
+              id: ctx.params.id,
+            },
+        }, { status: 200 });
   }),
 
-  rest.delete("/admin/notes/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: req.params.id,
+  http.delete("/admin/notes/:id", async(ctx) => {
+    return HttpResponse.json({
+        id: ctx.params.id,
         object: "note",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/price-lists/", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        price_list: {
-          ...fixtures.get("price_list"),
-          ...body,
-        },
-      })
-    )
+  http.post("/admin/price-lists/", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+        return HttpResponse.json({
+            price_list: {
+              ...fixtures.get("price_list"),
+              ...body,
+            },
+        }, { status: 200 });
   }),
 
-  rest.get("/admin/price-lists/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/price-lists/", async(ctx) => {
+    return HttpResponse.json({
         price_lists: fixtures.list("price_list"),
         count: 2,
         offset: 0,
         limit: 10,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/price-lists/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/price-lists/:id", async(ctx) => {
+    return HttpResponse.json({
         price_list: fixtures.get("price_list"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/price-lists/:id", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        price_list: {
-          ...fixtures.get("price_list"),
-          ...body,
-          id: req.params.id,
-        },
-      })
-    )
+  http.post("/admin/price-lists/:id", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+
+        return HttpResponse.json({
+            price_list: {
+              ...fixtures.get("price_list"),
+              ...body,
+              id: ctx.params.id,
+            },
+        }, { status: 200 });
   }),
 
-  rest.delete("/admin/price-lists/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: req.params.id,
+  http.delete("/admin/price-lists/:id", async(ctx) => {
+    return HttpResponse.json({
+        id: ctx.params.id,
         object: "price_list",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/price-lists/:id/prices/batch", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        ids: body.price_ids,
-        object: "money-amount",
-        deleted: true,
-      })
-    )
+  http.delete("/admin/price-lists/:id/prices/batch", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+
+        return HttpResponse.json({
+            ids: body.price_ids,
+            object: "money-amount",
+            deleted: true,
+        }, { status: 200 });
   }),
 
-  rest.post("/admin/price-lists/:id/prices/batch", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/price-lists/:id/prices/batch", async(ctx) => {
+    return HttpResponse.json({
         price_list: {
           ...fixtures.get("price_list"),
-          id: req.params.id,
+          id: ctx.params.id,
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete(
+  http.delete(
     "/admin/price-lists/:id/products/:product_id/prices",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          ids: [],
-          object: "money-amount",
-          deleted: true,
-        })
-      )
+    async(ctx) => {
+        return HttpResponse.json({
+            ids: [],
+            object: "money-amount",
+            deleted: true,
+        }, { status: 200 });
     }
   ),
 
-  rest.delete(
+  http.delete(
     "/admin/price-lists/:id/variants/:variant_id/prices",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          ids: [],
-          object: "money-amount",
-          deleted: true,
-        })
-      )
+    async(ctx) => {
+        return HttpResponse.json({
+            ids: [],
+            object: "money-amount",
+            deleted: true,
+        }, { status: 200 });
     }
   ),
 
-  rest.post("/admin/return-reasons/", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        return_reason: {
-          ...fixtures.get("return_reason"),
-          ...body,
-        },
-      })
-    )
+  http.post("/admin/return-reasons/", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+
+        return HttpResponse.json({
+            return_reason: {
+              ...fixtures.get("return_reason"),
+              ...body,
+            },
+        }, { status: 200 });
   }),
 
-  rest.get("/admin/return-reasons/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/return-reasons/", async(ctx) => {
+    return HttpResponse.json({
         return_reasons: fixtures.list("return_reason"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/return-reasons/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/return-reasons/:id", async(ctx) => {
+    return HttpResponse.json({
         return_reason: fixtures.get("return_reason"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/return-reasons/:id", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        return_reason: {
-          ...fixtures.get("return_reason"),
-          ...body,
-          id: req.params.id,
-        },
-      })
-    )
+  http.post("/admin/return-reasons/:id", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+
+        return HttpResponse.json({
+            return_reason: {
+              ...fixtures.get("return_reason"),
+              ...body,
+              id: ctx.params.id,
+            },
+        }, { status: 200 });
   }),
 
-  rest.delete("/admin/return-reasons/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: req.params.id,
+  http.delete("/admin/return-reasons/:id", async(ctx) => {
+    return HttpResponse.json({
+        id: ctx.params.id,
         object: "return_reason",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/shipping-options/", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        shipping_option: {
-          ...fixtures.get("shipping_option"),
-          ...body,
-        },
-      })
-    )
+  http.post("/admin/shipping-options/", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+
+        return HttpResponse.json({
+            shipping_option: {
+              ...fixtures.get("shipping_option"),
+              ...body,
+            },
+        }, { status: 200 });
   }),
 
-  rest.get("/admin/shipping-options/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/shipping-options/", async(ctx) => {
+    return HttpResponse.json({
         shipping_options: fixtures.list("shipping_option"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/shipping-options/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/shipping-options/:id", async(ctx) => {
+    return HttpResponse.json({
         shipping_option: fixtures.get("shipping_option"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/shipping-options/:id", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        shipping_option: {
-          ...fixtures.get("shipping_option"),
-          ...body,
-          id: req.params.id,
-        },
-      })
-    )
+  http.post("/admin/shipping-options/:id", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+        return HttpResponse.json({
+            shipping_option: {
+              ...fixtures.get("shipping_option"),
+              ...body,
+              id: ctx.params.id,
+            },
+        }, { status: 200 });
   }),
 
-  rest.delete("/admin/shipping-options/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: req.params.id,
+  http.delete("/admin/shipping-options/:id", async(ctx) => {
+    return HttpResponse.json({
+        id: ctx.params.id,
         object: "shipping_option",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/notifications/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/notifications/", async(ctx) => {
+    return HttpResponse.json({
         notifications: fixtures.list("notification"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/notifications/:id/resend", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/notifications/:id/resend", async(ctx) => {
+    return HttpResponse.json({
         notification: {
           ...fixtures.get("notification"),
-          id: req.params.id,
-          ...(req.body as any),
+          id: ctx.params.id,
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/invites", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/invites", async(ctx) => {
+    return HttpResponse.json({
         invites: fixtures.list("invite"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/invites/accept", (req, res, ctx) => {
-    return res(ctx.status(200))
+  http.post("/admin/invites/accept", async(ctx) => {
+    return HttpResponse.json({
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/invites", (req, res, ctx) => {
-    return res(ctx.status(200))
+  http.post("/admin/invites", async(ctx) => {
+    return HttpResponse.json({
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/invites/:id", (req, res, ctx) => {
-    return res(ctx.status(200))
+  http.post("/admin/invites/:id", async(ctx) => {
+    return HttpResponse.json({
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/invites/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: req.params.id,
+  http.delete("/admin/invites/:id", async(ctx) => {
+    return HttpResponse.json({
+        id: ctx.params.id,
         object: "invite",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/returns", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/returns", async(ctx) => {
+    return HttpResponse.json({
         returns: fixtures.list("return"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/returns/:id/receive", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/returns/:id/receive", async(ctx) => {
+    return HttpResponse.json({
         return: fixtures.get("return"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/returns/:id/cancel", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/returns/:id/cancel", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/shipping-profiles/", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        shipping_profile: {
-          ...fixtures.get("shipping_profile"),
-          ...body,
-        },
-      })
-    )
+  http.post("/admin/shipping-profiles/", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+
+        return HttpResponse.json({
+            shipping_profile: {
+              ...fixtures.get("shipping_profile"),
+              ...body,
+            },
+        }, { status: 200 });
   }),
 
-  rest.get("/admin/shipping-profiles/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/shipping-profiles/", async(ctx) => {
+    return HttpResponse.json({
         shipping_profiles: fixtures.list("shipping_profile"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/shipping-profiles/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/shipping-profiles/:id", async(ctx) => {
+    return HttpResponse.json({
         shipping_profile: fixtures.get("shipping_profile"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/shipping-profiles/:id", (req, res, ctx) => {
-    const body = req.body as Record<string, any>
-    return res(
-      ctx.status(200),
-      ctx.json({
-        shipping_profile: {
-          ...fixtures.get("shipping_profile"),
-          ...body,
-          id: req.params.id,
-        },
-      })
-    )
+  http.post("/admin/shipping-profiles/:id", async(ctx) => {
+    const body = (await ctx.request.json()) as Record<string, any>
+
+        return HttpResponse.json({
+            shipping_profile: {
+              ...fixtures.get("shipping_profile"),
+              ...body,
+              id: ctx.params.id,
+            },
+        }, { status: 200 });
   }),
 
-  rest.delete("/admin/shipping-profiles/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: req.params.id,
+  http.delete("/admin/shipping-profiles/:id", async(ctx) => {
+    return HttpResponse.json({
+        id: ctx.params.id,
         object: "shipping_profile",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/store/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/store/", async(ctx) => {
+    return HttpResponse.json({
         store: fixtures.get("store"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/store/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/store/", async(ctx) => {
+    return HttpResponse.json({
         store: {
           ...fixtures.get("store"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/store/:currency_code", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/store/:currency_code", async(ctx) => {
+    return HttpResponse.json({
         store: fixtures.get("store"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/store/currencies/:currency_code", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete("/admin/store/currencies/:currency_code", async(ctx) => {
+    return HttpResponse.json({
         store: fixtures.get("store"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/store/payment-providers", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/store/payment-providers", async(ctx) => {
+    return HttpResponse.json({
         payment_providers: fixtures.get("store").payment_providers,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/customers/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/customers/", async(ctx) => {
+    return HttpResponse.json({
         customers: fixtures.list("customer"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/customers/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/customers/:id", async(ctx) => {
+    return HttpResponse.json({
         customer: fixtures.get("customer"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/customers/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/customers/", async(ctx) => {
+    return HttpResponse.json({
         customer: {
           ...fixtures.get("customer"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/customers/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/customers/:id", async(ctx) => {
+    return HttpResponse.json({
         customer: {
           ...fixtures.get("customer"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/customer-groups/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/customer-groups/", async(ctx) => {
+    return HttpResponse.json({
         customer_groups: fixtures.list("customer_group"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/customer-groups/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/customer-groups/:id", async(ctx) => {
+    return HttpResponse.json({
         customer_group: fixtures.get("customer_group"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/customer-groups/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/customer-groups/", async(ctx) => {
+    return HttpResponse.json({
         customer_group: {
           ...fixtures.get("customer_group"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/customer-groups/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/customer-groups/:id", async(ctx) => {
+    return HttpResponse.json({
         customer_group: {
           ...fixtures.get("customer_group"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/customer-groups/:id/customers", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/customer-groups/:id/customers", async(ctx) => {
+    return HttpResponse.json({
         customers: fixtures.list("customer"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/discounts/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/discounts/", async(ctx) => {
+    return HttpResponse.json({
         discounts: fixtures.list("discount"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/discounts/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/discounts/:id", async(ctx) => {
+    return HttpResponse.json({
         discount: fixtures.get("discount"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/discounts/code/:code", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/discounts/code/:code", async(ctx) => {
+    return HttpResponse.json({
         discount: fixtures.get("discount"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/discounts/:id/regions/:region_id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/discounts/:id/regions/:region_id", async(ctx) => {
+    return HttpResponse.json({
         discount: fixtures.get("discount"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/discounts/:id/products/:product_id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/discounts/:id/products/:product_id", async(ctx) => {
+    return HttpResponse.json({
         discount: fixtures.get("discount"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/discounts/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/discounts/", async(ctx) => {
+    return HttpResponse.json({
         discount: {
           ...fixtures.get("discount"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/discounts/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/discounts/:id", async(ctx) => {
+    return HttpResponse.json({
         discount: {
           ...fixtures.get("discount"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/discounts/:id/dynamic-codes", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/discounts/:id/dynamic-codes", async(ctx) => {
+    return HttpResponse.json({
         discount: {
           ...fixtures.get("discount"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/discounts/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: req.params.id,
+  http.delete("/admin/discounts/:id", async(ctx) => {
+    return HttpResponse.json({
+        id: ctx.params.id,
         object: "discount",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/discounts/:id/dynamic-codes/:code", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete("/admin/discounts/:id/dynamic-codes/:code", async(ctx) => {
+    return HttpResponse.json({
         discount: fixtures.get("discount"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/discounts/:id/regions/:region_id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete("/admin/discounts/:id/regions/:region_id", async(ctx) => {
+    return HttpResponse.json({
         discount: fixtures.get("discount"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/discounts/:id/products/:product_id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete("/admin/discounts/:id/products/:product_id", async(ctx) => {
+    return HttpResponse.json({
         discount: fixtures.get("discount"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/discounts/:id/conditions", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/discounts/:id/conditions", async(ctx) => {
+    return HttpResponse.json({
         discount: {
           ...fixtures.get("discount"),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/discounts/:id/conditions/:conditionId", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/discounts/:id/conditions/:conditionId", async(ctx) => {
+    return HttpResponse.json({
         discount: {
           ...fixtures.get("discount"),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/discounts/:id/conditions/:conditionId", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/discounts/:id/conditions/:conditionId", async(ctx) => {
+    return HttpResponse.json({
         discount_condition: {
           ...fixtures
             .get("discount")
-            .rule.conditions.find((c) => c.id === req.params.conditionId),
+            .rule.conditions.find((c) => c.id === ctx.params.conditionId),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete(
+  http.delete(
     "/admin/discounts/:id/conditions/:conditionId",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          id: req.params.conditionId,
-          object: "discount-condition",
-          deleted: true,
-          discount: fixtures.get("discount"),
-        })
-      )
+    async(ctx) => {
+        return HttpResponse.json({
+            id: ctx.params.conditionId,
+            object: "discount-condition",
+            deleted: true,
+            discount: fixtures.get("discount"),
+        }, { status: 200 });
     }
   ),
 
-  rest.post(
+  http.post(
     "/admin/discounts/:id/conditions/:conditionId/batch",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          discount: {
-            ...fixtures.get("discount"),
-            rule: {
-              ...fixtures.get("discount").rule,
-              conditions: [
-                {
-                  ...fixtures.get("discount").rule.conditions[0],
-                  products: [
-                    ...(fixtures.get("discount").rule.conditions[0]?.products ??
-                      []),
-                    ...(req.body as any).resources,
-                  ],
-                },
-              ],
+    async(ctx) => {
+        return HttpResponse.json({
+            discount: {
+              ...fixtures.get("discount"),
+              rule: {
+                ...fixtures.get("discount").rule,
+                conditions: [
+                  {
+                    ...fixtures.get("discount").rule.conditions[0],
+                    products: [
+                      ...(fixtures.get("discount").rule.conditions[0]?.products ??
+                        []),
+                      ...((await ctx.request.json()) as any).resources,
+                    ],
+                  },
+                ],
+              },
             },
-          },
-        })
-      )
+        }, { status: 200 });
     }
   ),
 
-  rest.delete(
+  http.delete(
     "/admin/discounts/:id/conditions/:conditionId/batch",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          discount: {
-            ...fixtures.get("discount"),
-            rule: {
-              ...fixtures.get("discount").rule,
-              conditions: [
-                {
-                  ...fixtures.get("discount").rule.conditions[0],
-                  products: [],
-                },
-              ],
+    async(ctx) => {
+        return HttpResponse.json({
+            discount: {
+              ...fixtures.get("discount"),
+              rule: {
+                ...fixtures.get("discount").rule,
+                conditions: [
+                  {
+                    ...fixtures.get("discount").rule.conditions[0],
+                    products: [],
+                  },
+                ],
+              },
             },
-          },
-        })
-      )
+        }, { status: 200 });
     }
   ),
 
-  rest.get("/admin/publishable-api-keys/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/publishable-api-keys/", async(ctx) => {
+    return HttpResponse.json({
         publishable_api_keys: fixtures.list("publishable_api_key"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/publishable-api-keys/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/publishable-api-keys/:id", async(ctx) => {
+    return HttpResponse.json({
         publishable_api_key: fixtures.get("publishable_api_key"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/publishable-api-keys/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/publishable-api-keys/:id", async(ctx) => {
+    return HttpResponse.json({
         publishable_api_key: {
           ...fixtures.get("publishable_api_key"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/publishable-api-keys/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/publishable-api-keys/", async(ctx) => {
+    return HttpResponse.json({
         publishable_api_key: {
           ...fixtures.get("publishable_api_key"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/publishable-api-keys/:id/revoke", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/publishable-api-keys/:id/revoke", async(ctx) => {
+    return HttpResponse.json({
         publishable_api_key: {
           ...fixtures.get("publishable_api_key"),
           revoked_at: "2022-11-10 11:17:46.666Z",
           revoked_by: "admin_user",
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/publishable-api-keys/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete("/admin/publishable-api-keys/:id", async(ctx) => {
+    return HttpResponse.json({
         id: fixtures.get("publishable_api_key").id,
         object: "publishable_api_key",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/draft-orders/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/draft-orders/", async(ctx) => {
+    return HttpResponse.json({
         draft_orders: fixtures.list("draft_order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/draft-orders/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/draft-orders/:id", async(ctx) => {
+    return HttpResponse.json({
         draft_order: fixtures.get("draft_order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/draft-orders/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/draft-orders/", async(ctx) => {
+    return HttpResponse.json({
         draft_order: {
           ...fixtures.get("draft_order"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/draft-orders/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/draft-orders/:id", async(ctx) => {
+    return HttpResponse.json({
         draft_order: {
           ...fixtures.get("draft_order"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/draft-orders/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete("/admin/draft-orders/:id", async(ctx) => {
+    return HttpResponse.json({
         id: fixtures.get("draft_order").id,
         object: "draft_order",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/draft-orders/:id/line-items", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/draft-orders/:id/line-items", async(ctx) => {
+    return HttpResponse.json({
         draft_order: fixtures.get("draft_order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/draft-orders/:id/line-items/:item_id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/draft-orders/:id/line-items/:item_id", async(ctx) => {
+    return HttpResponse.json({
         draft_order: fixtures.get("draft_order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete(
+  http.delete(
     "/admin/draft-orders/:id/line-items/:item_id",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          draft_order: fixtures.get("draft_order"),
-        })
-      )
+    async(ctx) => {
+        return HttpResponse.json({
+            draft_order: fixtures.get("draft_order"),
+        }, { status: 200 });
     }
   ),
 
-  rest.post("/admin/draft-orders/:id/pay", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/draft-orders/:id/pay", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/swaps/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/swaps/", async(ctx) => {
+    return HttpResponse.json({
         swaps: fixtures.list("swap"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/swaps/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/swaps/:id", async(ctx) => {
+    return HttpResponse.json({
         swap: fixtures.get("swap"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/variants/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/variants/", async(ctx) => {
+    return HttpResponse.json({
         variants: fixtures.list("product_variant"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/users/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/users/:id", async(ctx) => {
+    return HttpResponse.json({
         user: fixtures.get("user"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/users/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/users/", async(ctx) => {
+    return HttpResponse.json({
         users: fixtures.list("user"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/users/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/users/", async(ctx) => {
+    return HttpResponse.json({
         user: {
           ...fixtures.get("user"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/users/password-token", (req, res, ctx) => {
-    return res(ctx.status(200))
+  http.post("/admin/users/password-token", async(ctx) => {
+    return HttpResponse.json({
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/users/reset-password", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/users/reset-password", async(ctx) => {
+    return HttpResponse.json({
         user: fixtures.get("user"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/users/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/users/:id", async(ctx) => {
+    return HttpResponse.json({
         user: {
           ...fixtures.get("user"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/users/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete("/admin/users/:id", async(ctx) => {
+    return HttpResponse.json({
         id: fixtures.get("user").id,
         object: "user",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/products/types", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        types: fixtures.list("product_type"),
-      })
-    )
+  http.get("/admin/product-types", async(ctx) => {
+    return HttpResponse.json({
+        product_types: fixtures.list("product_type"),
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/products/tag-usage", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/products/tag-usage", async(ctx) => {
+    return HttpResponse.json({
         tags: fixtures.list("product_tag"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/products/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/products/:id", async(ctx) => {
+    return HttpResponse.json({
         product: fixtures.get("product"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/products/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/products/", async(ctx) => {
+    return HttpResponse.json({
         products: fixtures.list("product"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/products/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/products/:id", async(ctx) => {
+    return HttpResponse.json({
         product: {
           ...fixtures.get("product"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/products/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/products/", async(ctx) => {
+    return HttpResponse.json({
         product: {
           ...fixtures.get("product"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/products/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: req.params.id,
+  http.delete("/admin/products/:id", async(ctx) => {
+    return HttpResponse.json({
+        id: ctx.params.id,
         object: "product",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/products/:id/metadata", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/products/:id/metadata", async(ctx) => {
+    return HttpResponse.json({
         product: fixtures.get("product"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/products/:id/variants", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/products/:id/variants", async(ctx) => {
+    return HttpResponse.json({
         product: fixtures.get("product"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/products/:id/variants/:variant_id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/products/:id/variants/:variant_id", async(ctx) => {
+    return HttpResponse.json({
         product: fixtures.get("product"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/products/:id/variants/:variant_id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        variant_id: req.params.variant_id,
+  http.delete("/admin/products/:id/variants/:variant_id", async(ctx) => {
+    return HttpResponse.json({
+        variant_id: ctx.params.variant_id,
         object: "product-variant",
         deleted: true,
         product: fixtures.get("product"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/products/:id/options", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/products/:id/options", async(ctx) => {
+    return HttpResponse.json({
         product: fixtures.get("product"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/products/:id/options/:option_id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/products/:id/options/:option_id", async(ctx) => {
+    return HttpResponse.json({
         product: fixtures.get("product"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/products/:id/options/:option_id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        option_id: req.params.option_id,
+  http.delete("/admin/products/:id/options/:option_id", async(ctx) => {
+    return HttpResponse.json({
+        option_id: ctx.params.option_id,
         object: "option",
         deleted: true,
         product: fixtures.get("product"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/regions/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/regions/:id", async(ctx) => {
+    return HttpResponse.json({
         region: fixtures.get("region"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/regions/:id/fulfillment-options", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/regions/:id/fulfillment-options", async(ctx) => {
+    return HttpResponse.json({
         fulfillment_options: fixtures.get("fulfillment_option"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/regions/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/regions/", async(ctx) => {
+    return HttpResponse.json({
         regions: fixtures.list("region"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/regions/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/regions/:id", async(ctx) => {
+    return HttpResponse.json({
         region: {
           ...fixtures.get("region"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/regions/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/regions/", async(ctx) => {
+    return HttpResponse.json({
         region: {
           ...fixtures.get("region"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/regions/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: req.params.id,
+  http.delete("/admin/regions/:id", async(ctx) => {
+    return HttpResponse.json({
+        id: ctx.params.id,
         object: "region",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/regions/:id/metadata", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/regions/:id/metadata", async(ctx) => {
+    return HttpResponse.json({
         region: fixtures.get("region"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/regions/:id/metadata/:key", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete("/admin/regions/:id/metadata/:key", async(ctx) => {
+    return HttpResponse.json({
         region: fixtures.get("region"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/regions/:id/countries", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/regions/:id/countries", async(ctx) => {
+    return HttpResponse.json({
         region: fixtures.get("product"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/regions/:id/countries/:code", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete("/admin/regions/:id/countries/:code", async(ctx) => {
+    return HttpResponse.json({
         region: fixtures.get("product"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/regions/:id/fulfillment-providers", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/regions/:id/fulfillment-providers", async(ctx) => {
+    return HttpResponse.json({
         region: fixtures.get("region"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete(
+  http.delete(
     "/admin/regions/:id/fulfillment-providers/:provider_id",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          region: fixtures.get("region"),
-        })
-      )
+    async(ctx) => {
+        return HttpResponse.json({
+            region: fixtures.get("region"),
+        }, { status: 200 });
     }
   ),
 
-  rest.delete(
+  http.delete(
     "/admin/regions/:id/payment-providers/:provider_id",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          region: fixtures.get("region"),
-        })
-      )
+    async(ctx) => {
+        return HttpResponse.json({
+            region: fixtures.get("region"),
+        }, { status: 200 });
     }
   ),
 
-  rest.post("/admin/regions/:id/payment-providers", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/regions/:id/payment-providers", async(ctx) => {
+    return HttpResponse.json({
         region: fixtures.get("region"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/orders/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/orders/:id", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/orders/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/orders/", async(ctx) => {
+    return HttpResponse.json({
         orders: fixtures.list("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id", async(ctx) => {
+    return HttpResponse.json({
         order: {
           ...fixtures.get("order"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/", async(ctx) => {
+    return HttpResponse.json({
         order: {
           ...fixtures.get("order"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/:id/complete", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/complete", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/:id/capture", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/capture", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/:id/refund", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/refund", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/:id/fulfillment", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/fulfillment", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post(
+  http.post(
     "/admin/orders/:id/fulfillments/:fulfillment_id/cancel",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          order: fixtures.get("order"),
-        })
-      )
+    async(ctx) => {
+        return HttpResponse.json({
+            order: fixtures.get("order"),
+        }, { status: 200 });
     }
   ),
 
-  rest.post(
+  http.post(
     "/admin/orders/:id/swaps/:swap_id/fulfillments/:fulfillment_id/cancel",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          order: fixtures.get("order"),
-        })
-      )
+    async(ctx) => {
+        return HttpResponse.json({
+            order: fixtures.get("order"),
+        }, { status: 200 });
     }
   ),
 
-  rest.post(
+  http.post(
     "/admin/orders/:id/claims/:claim_id/fulfillments/:fulfillment_id/cancel",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          order: fixtures.get("order"),
-        })
-      )
+    async(ctx) => {
+        return HttpResponse.json({
+            order: fixtures.get("order"),
+        }, { status: 200 });
     }
   ),
 
-  rest.post("/admin/orders/:id/shipment", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/shipment", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/:id/return", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/return", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/:id/cancel", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/cancel", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/:id/shipping-methods", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/shipping-methods", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/:id/archive", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/archive", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/:id/swaps", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/swaps", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/:id/swaps/:swap_id/cancel", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/swaps/:swap_id/cancel", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/:id/swaps/:swap_id/receive", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/swaps/:swap_id/receive", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post(
+  http.post(
     "/admin/orders/:id/swaps/:swap_id/fulfillments",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          order: fixtures.get("order"),
-        })
-      )
+    async(ctx) => {
+        return HttpResponse.json({
+            order: fixtures.get("order"),
+        }, { status: 200 });
     }
   ),
 
-  rest.post("/admin/orders/:id/swaps/:swap_id/shipments", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/swaps/:swap_id/shipments", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post(
+  http.post(
     "/admin/orders/:id/swaps/:swap_id/process-payment",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          order: fixtures.get("order"),
-        })
-      )
+    async(ctx) => {
+        return HttpResponse.json({
+            order: fixtures.get("order"),
+        }, { status: 200 });
     }
   ),
 
-  rest.post("/admin/orders/:id/claims", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/claims", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/:id/claims/:claim_id/cancel", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/claims/:claim_id/cancel", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/orders/:id/claims/:claim_id/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/claims/:claim_id/", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post(
+  http.post(
     "/admin/orders/:id/claims/:claim_id/fulfillments",
-    (req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          order: fixtures.get("order"),
-        })
-      )
+    async(ctx) => {
+        return HttpResponse.json({
+            order: fixtures.get("order"),
+        }, { status: 200 });
     }
   ),
 
-  rest.post("/admin/orders/:id/claims/:claim_id/shipments", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/orders/:id/claims/:claim_id/shipments", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/orders/:id/metadata/:key", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete("/admin/orders/:id/metadata/:key", async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get("order"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/order-edits/:id", (req, res, ctx) => {
-    const { id } = req.params
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/order-edits/:id", async(ctx) => {
+    const { id } = ctx.params
+    return HttpResponse.json({
         order_edit: fixtures.get("order_edit"),
         id,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/order-edits/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/order-edits/", async(ctx) => {
+    return HttpResponse.json({
         count: 1,
         limit: 20,
         offset: 0,
         order_edits: [fixtures.get("order_edit")],
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/order-edits/", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/order-edits/", async(ctx) => {
+    return HttpResponse.json({
         order_edit: {
           ...fixtures.get("order_edit"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/store/order-edits/:id", (req, res, ctx) => {
-    const { id } = req.params
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/store/order-edits/:id", async(ctx) => {
+    const { id } = ctx.params
+    return HttpResponse.json({
         order_edit: fixtures.get("store_order_edit"),
         id,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/order-edits/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        order_edit: { ...fixtures.get("order_edit"), ...(req.body as any) },
-      })
-    )
+  http.post("/admin/order-edits/:id", async(ctx) => {
+    return HttpResponse.json({
+        order_edit: { ...fixtures.get("order_edit"), ...((await ctx.request.json()) as any) },
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/order-edits/:id/cancel", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/order-edits/:id/cancel", async(ctx) => {
+    return HttpResponse.json({
         order_edit: {
           ...fixtures.get("order_edit"),
           canceled_at: new Date(),
           status: "canceled",
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/order-edits/:id/confirm", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/order-edits/:id/confirm", async(ctx) => {
+    return HttpResponse.json({
         order_edit: {
           ...fixtures.get("order_edit"),
           confirmed_at: new Date(),
           status: "confirmed",
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/order-edits/:id/items", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        order_edit: { ...fixtures.get("order_edit"), ...(req.body as any) },
-      })
-    )
+  http.post("/admin/order-edits/:id/items", async(ctx) => {
+    return HttpResponse.json({
+        order_edit: { ...fixtures.get("order_edit"), ...((await ctx.request.json()) as any) },
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/order-edits/:id/request", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/order-edits/:id/request", async(ctx) => {
+    return HttpResponse.json({
         order_edit: {
           ...fixtures.get("order_edit"),
           requested_at: new Date(),
           status: "requested",
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/order-edits/:id", (req, res, ctx) => {
-    const { id } = req.params
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete("/admin/order-edits/:id", async(ctx) => {
+    const { id } = ctx.params
+    return HttpResponse.json({
         id,
         object: "order_edit",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/order-edits/:id/changes/:change_id", (req, res, ctx) => {
-    const { change_id } = req.params
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete("/admin/order-edits/:id/changes/:change_id", async(ctx) => {
+    const { change_id } = ctx.params
+    return HttpResponse.json({
         id: change_id,
         object: "item_change",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/order-edits/:id/items/:item_id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/order-edits/:id/items/:item_id", async(ctx) => {
+    return HttpResponse.json({
         order_edit: {
           ...fixtures.get("order_edit"),
           changes: [
             {
-              quantity: (req.body as any).quantity,
+              quantity: ((await ctx.request.json()) as any).quantity,
             },
           ],
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/order-edits/:id/items/:item_id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete("/admin/order-edits/:id/items/:item_id", async(ctx) => {
+    return HttpResponse.json({
         order_edit: {
           ...fixtures.get("order_edit"),
           changes: [
@@ -1924,142 +1407,103 @@ export const adminHandlers = [
             },
           ],
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/auth", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/auth", async(ctx) => {
+    return HttpResponse.json({
         user: fixtures.get("user"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/auth", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/auth", async(ctx) => {
+    return HttpResponse.json({
         user: fixtures.get("user"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/auth", (req, res, ctx) => {
-    return res(ctx.status(200))
+  http.delete("/admin/auth", async(ctx) => {
+    return HttpResponse.json({
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/uploads", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: (req.body as any).file_key,
+  http.delete("/admin/uploads", async(ctx) => {
+    return HttpResponse.json({
+        id: ((await ctx.request.json()) as any).file_key,
         object: "file",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/uploads/download-url", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/uploads/download-url", async(ctx) => {
+    return HttpResponse.json({
         download_url: fixtures.get("upload").url,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/sales-channels/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/sales-channels/:id", async(ctx) => {
+    return HttpResponse.json({
         sales_channel: fixtures.get("sales_channel"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/sales-channels", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/sales-channels", async(ctx) => {
+    return HttpResponse.json({
         count: 1,
         limit: 20,
         offset: 20,
         sales_channels: fixtures.get("sales_channels"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/sales-channels/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/sales-channels/:id", async(ctx) => {
+    return HttpResponse.json({
         sales_channel: {
           ...fixtures.get("sales_channel"),
-          ...(req.body as any),
+          ...((await ctx.request.json()) as any),
         },
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/sales-channels", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/sales-channels", async(ctx) => {
+    return HttpResponse.json({
         sales_channel: fixtures.get("sales_channel"),
-        ...(req.body as Record<string, unknown>),
-      })
-    )
+        ...((await ctx.request.json()) as Record<string, unknown>),
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/sales-channels/:id", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        id: req.params.id,
+  http.delete("/admin/sales-channels/:id", async(ctx) => {
+    return HttpResponse.json({
+        id: ctx.params.id,
         object: "sales-channel",
         deleted: true,
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.delete("/admin/sales-channels/:id/products/batch", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete("/admin/sales-channels/:id/products/batch", async(ctx) => {
+    return HttpResponse.json({
         sales_channel: fixtures.get("sales_channel"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/sales-channels/:id/products/batch", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post("/admin/sales-channels/:id/products/batch", async(ctx) => {
+    return HttpResponse.json({
         sales_channel: fixtures.get("sales_channel"),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.get("/admin/currencies", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get("/admin/currencies", async(ctx) => {
+    return HttpResponse.json({
         count: 1,
         limit: 20,
         offset: 20,
         currencies: fixtures.list("currency", 1),
-      })
-    )
+    }, { status: 200 });
   }),
 
-  rest.post("/admin/currencies/:code", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        currency: { ...fixtures.get("currency"), ...(req.body as any) },
-      })
-    )
+  http.post("/admin/currencies/:code", async(ctx) => {
+    return HttpResponse.json({
+        currency: { ...fixtures.get("currency"), ...((await ctx.request.json()) as any) },
+    }, { status: 200 });
   }),
 ]

@@ -18,7 +18,7 @@ describe('useCreateCustomer hook', () => {
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
+    expect(vm.status).toEqual('success');
     expect(vm.data?.customer).toEqual({
       ...fixtures.get('customer'),
       ...customer,
@@ -45,10 +45,11 @@ describe('useUpdateMe hook', () => {
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
+    expect(vm.status).toEqual('success');
     expect(vm.data?.customer).toEqual({
       ...fixtures.get('customer'),
       ...customer,
+      id: 'cus_test'
     });
   });
 });

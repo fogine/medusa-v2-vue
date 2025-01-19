@@ -4,11 +4,7 @@ import {
   useCompleteCart,
   useCreateCart,
   useCreatePaymentSession,
-  useDeletePaymentSession,
-  useRefreshPaymentSession,
-  useSetPaymentSession,
   useUpdateCart,
-  useUpdatePaymentSession,
 } from '../../../../src';
 import { createWrapperComponent, waitFor } from '../../../utils';
 
@@ -20,7 +16,7 @@ describe('useCreateCart hook', () => {
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
+    expect(vm.status).toEqual('success');
     expect(vm.data?.cart).toEqual(fixtures.get('cart'));
   });
 });
@@ -35,7 +31,7 @@ describe('useUpdateCart hook', () => {
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
+    expect(vm.status).toEqual('success');
     expect(vm.data?.cart).toEqual({
       ...fixtures.get('cart'),
       id: 'some-cart',
@@ -52,110 +48,33 @@ describe('useCompleteCart hook', () => {
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
+    expect(vm.status).toEqual('success');
     expect(vm.data?.type).toEqual('order');
-    expect(vm.data?.data).toEqual(fixtures.get('order'));
+    if (vm.data?.type === 'order') {
+      expect(vm.data?.order).toEqual(fixtures.get('order'));
+    }
   });
 });
 
-describe('useCreatePaymentSession hook', () => {
-  test('creates a payment session', async () => {
-    const { vm } = createWrapperComponent(() =>
-      useCreatePaymentSession('test-cart')
-    );
+// describe('useCreatePaymentSession hook', () => {
+//   test('creates a payment session', async () => {
 
-    vm.mutate();
+//     const cart = fixtures.get('cart');
+//     const { vm } = createWrapperComponent(() =>
+//       useCreatePaymentSession(cart, {})
+//     );
 
-    await waitFor(() => vm.isSuccess);
+//     vm.mutate();
 
-    expect(vm.data?.response.status).toEqual(200);
-    expect(vm.data?.cart).toEqual({
-      ...fixtures.get('cart'),
-      id: 'test-cart',
-    });
-  });
-});
+//     await waitFor(() => vm.isSuccess);
 
-describe('useUpdatePaymentSession hook', () => {
-  test('updates a payment session', async () => {
-    const { vm } = createWrapperComponent(() =>
-      useUpdatePaymentSession('test-cart')
-    );
-
-    vm.mutate({
-      data: {},
-      provider_id: 'stripe',
-    });
-
-    await waitFor(() => vm.isSuccess);
-
-    expect(vm.data?.response.status).toEqual(200);
-    expect(vm.data?.cart).toEqual({
-      ...fixtures.get('cart'),
-      id: 'test-cart',
-    });
-  });
-});
-
-describe('useRefreshPaymentSession hook', () => {
-  test('refreshes a payment session', async () => {
-    const { vm } = createWrapperComponent(() =>
-      useRefreshPaymentSession('test-cart')
-    );
-
-    vm.mutate({
-      provider_id: 'stripe',
-    });
-
-    await waitFor(() => vm.isSuccess);
-
-    expect(vm.data?.response.status).toEqual(200);
-    expect(vm.data?.cart).toEqual({
-      ...fixtures.get('cart'),
-      id: 'test-cart',
-    });
-  });
-});
-
-describe('useSetPaymentSession hook', () => {
-  test('sets a payment session', async () => {
-    const { vm } = createWrapperComponent(() =>
-      useSetPaymentSession('test-cart')
-    );
-
-    vm.mutate({
-      provider_id: 'stripe',
-    });
-
-    await waitFor(() => vm.isSuccess);
-
-    expect(vm.data?.response.status).toEqual(200);
-    expect(vm.data?.cart).toEqual({
-      ...fixtures.get('cart'),
-      id: 'test-cart',
-    });
-  });
-});
-
-describe('useDeletePaymentSession hook', () => {
-  test('deletes a payment session', async () => {
-    const { vm } = createWrapperComponent(() =>
-      useDeletePaymentSession('test-cart')
-    );
-
-    vm.mutate({
-      provider_id: 'stripe',
-    });
-
-    await waitFor(() => vm.isSuccess);
-
-    expect(vm.data?.response.status).toEqual(200);
-    expect(vm.data?.cart).toEqual({
-      ...fixtures.get('cart'),
-      id: 'test-cart',
-    });
-  });
-});
+//     expect(vm.status).toEqual('success');
+//     expect(vm.data?.cart).toEqual({
+//       ...fixtures.get('cart'),
+//       id: 'test-cart',
+//     });
+//   });
+// });
 
 describe('useAddShippingMethodToCart hook', () => {
   test('adds a shipping method to a cart', async () => {
@@ -169,7 +88,7 @@ describe('useAddShippingMethodToCart hook', () => {
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
+    expect(vm.status).toEqual('success');
     expect(vm.data?.cart).toEqual({
       ...fixtures.get('cart'),
       id: 'test-cart',

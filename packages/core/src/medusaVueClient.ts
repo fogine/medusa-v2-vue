@@ -25,6 +25,7 @@ export const createMedusaVueClient = (options: MedusaVueClientProps) => {
       const medusa = new Medusa({
         baseUrl: options.baseUrl,
         apiKey: options.apiKey,
+        debug: false,
         publishableKey: options.publishableApiKey,
       });
 

@@ -109,6 +109,7 @@
       },
       "items": [],
       "region_id": "region",
+      "currency_code": "usd",
       "region": {
         "id": "region",
         "name": "Test Region",

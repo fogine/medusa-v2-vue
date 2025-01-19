@@ -1,272 +1,206 @@
 import { fixtures } from '../data';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 
 export const storeHandlers = [
-  rest.get('/store/products', (req, res, ctx) => {
-    const limit = parseInt(req.url.searchParams.get('limit') || '2');
-    const offset = parseInt(req.url.searchParams.get('offset') || '0');
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get('/store/products', async (ctx) => {
+      ctx.request.url
+    const limit = parseInt((new URL(ctx.request.url)).searchParams.get('limit') || '2');
+    const offset = parseInt((new URL(ctx.request.url)).searchParams.get('offset') || '0');
+    return HttpResponse.json({
         products: fixtures.list('product', limit),
         offset,
         limit,
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.get('/store/products/:id', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get('/store/products/:id', async(ctx) => {
+    return HttpResponse.json({
         product: fixtures.get('product'),
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.get('/store/product-types', (req, res, ctx) => {
-    const limit = parseInt(req.url.searchParams.get('limit') || '2');
-    const offset = parseInt(req.url.searchParams.get('offset') || '0');
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get('/store/product-types', async(ctx) => {
+    const limit = parseInt((new URL(ctx.request.url)).searchParams.get('limit') || '2');
+    const offset = parseInt((new URL(ctx.request.url)).searchParams.get('offset') || '0');
+    return HttpResponse.json({
         product_types: fixtures.list('product_type'),
         offset,
         limit,
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.get('/store/collections/', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get('/store/collections', async(ctx) => {
+    return HttpResponse.json({
         collections: fixtures.list('product_collection'),
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.get('/store/collections/:id', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get('/store/collections/:id', async(ctx) => {
+    return HttpResponse.json({
         collection: fixtures.get('product_collection'),
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.get('/store/regions/', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get('/store/regions', async(ctx) => {
+    return HttpResponse.json({
         regions: fixtures.list('region'),
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.get('/store/regions/:id', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get('/store/regions/:id', async(ctx) => {
+    return HttpResponse.json({
         region: fixtures.get('region'),
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.get('/store/gift-cards/:id', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get('/store/gift-cards/:id', async(ctx) => {
+    return HttpResponse.json({
         gift_card: fixtures.get('gift_card'),
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.post('/store/order-edits/:id/decline', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post('/store/order-edits/:id/decline', async(ctx) => {
+    return HttpResponse.json({
         order_edit: {
           ...fixtures.get('store_order_edit'),
-          declined_reason: (req.body as any).declined_reason,
+          declined_reason: (ctx.request.body as any).declined_reason,
           status: 'declined',
         },
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.post('/store/order-edits/:id/complete', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post('/store/order-edits/:id/complete', async(ctx) => {
+    return HttpResponse.json({
         order_edit: {
           ...fixtures.get('store_order_edit'),
           status: 'confirmed',
         },
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.get('/store/orders/:id', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get('/store/orders/:id', async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get('order'),
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.get('/store/orders/cart/:id', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get('/store/orders/cart/:id', async(ctx) => {
+    return HttpResponse.json({
         order: fixtures.get('order'),
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.get('/store/orders/', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        orders: fixtures.get('order'),
-      })
-    );
-  }),
-
-  rest.post('/store/orders/customer/confirm', (req, res, ctx) => {
-    return res(ctx.status(200));
-  }),
-
-  rest.post('/store/orders/batch/customer/token', (req, res, ctx) => {
-    return res(ctx.status(200));
-  }),
-
-  rest.get('/store/return-reasons/', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        return_reasons: fixtures.list('return_reason'),
-      })
-    );
-  }),
-
-  rest.get('/store/return-reasons/:id', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        return_reason: fixtures.get('return_reason'),
-      })
-    );
-  }),
-
-  rest.get('/store/shipping-options/:cart_id', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        shipping_options: fixtures.list('shipping_option'),
-      })
-    );
-  }),
-
-  rest.get('/store/shipping-options/', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        shipping_options: fixtures.list('shipping_option', 5),
-      })
-    );
-  }),
-
-  rest.get('/store/swaps/:cart_id', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        swap: fixtures.get('swap'),
-      })
-    );
-  }),
-
-  rest.get('/store/customers/me', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        customer: fixtures.get('customer'),
-      })
-    );
-  }),
-
-  rest.get('/store/customers/me/orders', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get('/store/orders', async(ctx) => {
+    return HttpResponse.json({
         orders: fixtures.list('order', 5),
         limit: 5,
         offset: 0,
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.post('/store/customers/', (req, res, ctx) => {
-    const body = req.body as Record<string, string>;
+  http.post('/store/orders/customer/confirm', async(ctx) => {
+    return HttpResponse.json({
+    }, { status: 200 });
+  }),
+
+  http.post('/store/orders/batch/customer/token', async(ctx) => {
+    return HttpResponse.json({
+    }, { status: 200 });
+  }),
+
+  http.get('/store/return-reasons', async(ctx) => {
+    return HttpResponse.json({
+        return_reasons: fixtures.list('return_reason'),
+    }, { status: 200 });
+  }),
+
+  http.get('/store/return-reasons/:id', async(ctx) => {
+    return HttpResponse.json({
+        return_reason: fixtures.get('return_reason'),
+    }, { status: 200 });
+  }),
+
+  http.get('/store/shipping-options/:cart_id', async(ctx) => {
+    return HttpResponse.json({
+        shipping_options: fixtures.list('shipping_option'),
+    }, { status: 200 });
+  }),
+
+  http.get('/store/shipping-options', async(ctx) => {
+    return HttpResponse.json({
+        shipping_options: fixtures.list('shipping_option', 5),
+    }, { status: 200 });
+  }),
+
+  http.get('/store/swaps/:cart_id', async(ctx) => {
+    return HttpResponse.json({
+        swap: fixtures.get('swap'),
+    }, { status: 200 });
+  }),
+
+  http.get('/store/customers/me', async(ctx) => {
+    return HttpResponse.json({
+        customer: fixtures.get('customer'),
+    }, { status: 200 });
+  }),
+
+  http.get('/store/customers/me/orders', async(ctx) => {
+    return HttpResponse.json({
+        orders: fixtures.list('order', 5),
+        limit: 5,
+        offset: 0,
+    }, { status: 200 });
+  }),
+
+  http.post('/store/customers', async(ctx) => {
+    const body = await ctx.request.json() as Record<string, string>;
     const dummyCustomer = fixtures.get('customer');
     const customer = {
       ...dummyCustomer,
       ...body,
     };
 
-    return res(
-      ctx.status(200),
-      ctx.json({
-        customer,
-      })
-    );
+    return HttpResponse.json({
+        customer
+    }, { status: 200 });
   }),
 
-  rest.post('/store/customers/me', (req, res, ctx) => {
-    const body = req.body as Record<string, string>;
+  http.post('/store/customers/me', async(ctx) => {
+    const body = await ctx.request.json() as Record<string, string>;
     const dummyCustomer = fixtures.get('customer');
     const customer = {
       ...dummyCustomer,
       ...body,
     };
 
-    return res(
-      ctx.status(200),
-      ctx.json({
+    return HttpResponse.json({
         customer,
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.get('/store/carts/:id', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        cart: fixtures.get('cart'),
-      })
-    );
+  http.get('/store/carts/:id', async (ctx) => {
+
+      return HttpResponse.json({
+          cart: fixtures.get('cart'),
+      }, { status: 200 });
   }),
 
-  rest.post('/store/returns/', (req, res, ctx) => {
-    const { items, ...body } = req.body as Record<string, any>;
+  http.post('/store/returns', async(ctx) => {
+    const {items, ...body} = await ctx.request.json() as Record<string, any>;
     const ret = fixtures.get('return');
     const item = ret.items[0];
     ret.items = items.map(i => ({ ...i, ...item }));
 
-    return res(
-      ctx.status(200),
-      ctx.json({
+    return HttpResponse.json({
         return: {
           ...ret,
           ...body,
         },
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.post('/store/swaps/', (req, res, ctx) => {
-    const { additional_items, return_items, ...body } = req.body as Record<
+  http.post('/store/swaps', async(ctx) => {
+    const { additional_items, return_items, ...body } = (await ctx.request.json()) as Record<
       string,
       any
     >;
@@ -282,24 +216,20 @@ export const storeHandlers = [
       ...return_item,
     }));
 
-    return res(
-      ctx.status(200),
-      ctx.json({
+    return HttpResponse.json({
         swap: {
           ...swap,
           ...body,
         },
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.post('/store/carts/:id/line-items', (req, res, ctx) => {
-    const { id } = req.params;
-    const { quantity, variant_id } = req.body as Record<string, any>;
+  http.post('/store/carts/:id/line-items', async(ctx) => {
+    const { id } = ctx.params;
+    const { quantity, variant_id } = (await ctx.request.json()) as Record<string, any>;
     const item = fixtures.get('line_item');
-    return res(
-      ctx.status(200),
-      ctx.json({
+
+    return HttpResponse.json({
         cart: {
           ...fixtures.get('cart'),
           id,
@@ -311,17 +241,15 @@ export const storeHandlers = [
             },
           ],
         },
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.post('/store/carts/:id/line-items/:line_id', (req, res, ctx) => {
-    const { id, line_id } = req.params;
-    const { quantity } = req.body as Record<string, any>;
+  http.post('/store/carts/:id/line-items/:line_id', async(ctx) => {
+    const { id, line_id } = ctx.params;
+    const { quantity } = (await ctx.request.json()) as Record<string, any>;
     const item = fixtures.get('line_item');
-    return res(
-      ctx.status(200),
-      ctx.json({
+
+    return HttpResponse.json({
         cart: {
           ...fixtures.get('cart'),
           id,
@@ -333,203 +261,175 @@ export const storeHandlers = [
             },
           ],
         },
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.delete('/store/carts/:id/line-items/:line_id', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.delete('/store/carts/:id/line-items/:line_id', async(ctx) => {
+    return HttpResponse.json({
+        id: ctx.params.line_id,
+        object: 'line-item',
+        deleted: true,
+        parent: fixtures.get('cart'),
+    }, { status: 200 });
+  }),
+
+  http.post('/store/carts', async(ctx) => {
+    return HttpResponse.json({
         cart: fixtures.get('cart'),
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.post('/store/carts/', (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        cart: fixtures.get('cart'),
-      })
-    );
-  }),
+  http.post('/store/carts/:id', async(ctx) => {
+    const { id } = ctx.params;
+    const body = (await ctx.request.json()) as Record<string, any>;
 
-  rest.post('/store/carts/:id', (req, res, ctx) => {
-    const { id } = req.params;
-    const body = req.body as Record<string, any>;
-    return res(
-      ctx.status(200),
-      ctx.json({
+    return HttpResponse.json({
         cart: {
           ...fixtures.get('cart'),
           id,
           ...body,
         },
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.post('/store/carts/:id/complete', (req, res, ctx) => {
-    const { id } = req.params;
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post('/store/carts/:id/complete', async(ctx) => {
+    const { id } = ctx.params;
+
+    return HttpResponse.json({
         type: 'order',
-        data: fixtures.get('order'),
-      })
-    );
+        order: fixtures.get('order'),
+    }, { status: 200 });
   }),
 
-  rest.post('/store/carts/:id/payment-sessions', (req, res, ctx) => {
-    const { id } = req.params;
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post('/store/carts/:id/payment-sessions', async(ctx) => {
+    const { id } = ctx.params;
+
+    return HttpResponse.json({
         cart: {
           ...fixtures.get('cart'),
           id,
         },
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.post(
+  http.post(
     '/store/carts/:id/payment-sessions/:provider_id',
-    (req, res, ctx) => {
-      const { id } = req.params;
-      return res(
-        ctx.status(200),
-        ctx.json({
-          cart: {
-            ...fixtures.get('cart'),
-            id,
-          },
-        })
-      );
+    async(ctx) => {
+      const { id } = ctx.params;
+
+        return HttpResponse.json({
+            cart: {
+              ...fixtures.get('cart'),
+              id,
+            },
+        }, { status: 200 });
     }
   ),
 
-  rest.post(
+  http.post(
     '/store/carts/:id/payment-sessions/:provider_id/refresh',
-    (req, res, ctx) => {
-      const { id } = req.params;
-      return res(
-        ctx.status(200),
-        ctx.json({
-          cart: {
-            ...fixtures.get('cart'),
-            id,
-          },
-        })
-      );
+    async(ctx) => {
+      const { id } = ctx.params;
+
+        return HttpResponse.json({
+            cart: {
+              ...fixtures.get('cart'),
+              id,
+            },
+        }, { status: 200 });
     }
   ),
 
-  rest.post('/store/carts/:id/payment-session', (req, res, ctx) => {
-    const { id } = req.params;
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post('/store/carts/:id/payment-session', async(ctx) => {
+    const { id } = ctx.params;
+
+    return HttpResponse.json({
         cart: {
           ...fixtures.get('cart'),
           id,
         },
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.delete(
+  http.delete(
     '/store/carts/:id/payment-sessions/:provider_id',
-    (req, res, ctx) => {
-      const { id } = req.params;
-      return res(
-        ctx.status(200),
-        ctx.json({
-          cart: {
-            ...fixtures.get('cart'),
-            id,
-          },
-        })
-      );
+    async(ctx) => {
+      const { id } = ctx.params;
+
+        return HttpResponse.json({
+            cart: {
+              ...fixtures.get('cart'),
+              id,
+            },
+        }, { status: 200 });
     }
   ),
 
-  rest.post('/store/carts/:id/shipping-methods', (req, res, ctx) => {
-    const { id } = req.params;
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post('/store/carts/:id/shipping-methods', async(ctx) => {
+    const { id } = ctx.params;
+
+    return HttpResponse.json({
         cart: {
           ...fixtures.get('cart'),
           id,
         },
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.get('/store/payment-collections/:id', (req, res, ctx) => {
-    const { id } = req.params;
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.get('/store/payment-collections/:id', async(ctx) => {
+    const { id } = ctx.params;
+
+    return HttpResponse.json({
         payment_collection: {
           ...fixtures.get('payment_collection'),
           id,
         },
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.post(
+  http.post(
     '/store/payment-collections/:id/sessions/batch',
-    (req, res, ctx) => {
-      const { id } = req.params;
-      return res(
-        ctx.status(200),
-        ctx.json({
-          payment_collection: {
-            ...fixtures.get('payment_collection'),
-            id,
-          },
-        })
-      );
+    async(ctx) => {
+      const { id } = ctx.params;
+
+        return HttpResponse.json({
+            payment_collection: {
+              ...fixtures.get('payment_collection'),
+              id,
+            },
+        }, { status: 200 });
     }
   ),
 
-  rest.post(
+  http.post(
     '/store/payment-collections/:id/sessions/batch/authorize',
-    (req, res, ctx) => {
-      const { id } = req.params;
-      return res(
-        ctx.status(207),
-        ctx.json({
-          payment_collection: {
-            ...fixtures.get('payment_collection'),
-            id,
-          },
-        })
-      );
+    async(ctx) => {
+      const { id } = ctx.params;
+
+        return HttpResponse.json({
+            payment_collection: {
+              ...fixtures.get('payment_collection'),
+              id,
+            },
+        }, { status: 200 });
     }
   ),
 
-  rest.post('/store/payment-collections/:id/sessions', (req, res, ctx) => {
-    const { id } = req.params;
-    return res(
-      ctx.status(200),
-      ctx.json({
+  http.post('/store/payment-collections/:id/sessions', async(ctx) => {
+    const { id } = ctx.params;
+
+    return HttpResponse.json({
         payment_collection: {
           ...fixtures.get('payment_collection'),
           id,
         },
-      })
-    );
+    }, { status: 200 });
   }),
 
-  rest.post(
+  http.post(
     '/store/payment-collections/:id/sessions/:session_id',
-    (req, res, ctx) => {
-      const { id, session_id } = req.params;
+    async(ctx) => {
+      const { id, session_id } = ctx.params;
       const payCol: any = { ...fixtures.get('payment_collection') };
 
       payCol.payment_sessions[0].id = `new_${session_id}`;
@@ -537,30 +437,25 @@ export const storeHandlers = [
         payment_session: payCol.payment_sessions[0],
       };
 
-      return res(
-        ctx.status(200),
-        ctx.json({
-          ...session,
-        })
-      );
+        return HttpResponse.json({
+            ...session,
+        }, { status: 200 });
     }
   ),
 
-  rest.post(
+  http.post(
     '/store/payment-collections/:id/sessions/:session_id/authorize',
-    (req, res, ctx) => {
-      const { session_id } = req.params;
+    async(ctx) => {
+      const { session_id } = ctx.params;
 
       const session = fixtures.get('payment_collection').payment_sessions[0];
-      return res(
-        ctx.status(200),
-        ctx.json({
-          payment_collection: {
-            ...session,
-            id: session_id,
-          },
-        })
-      );
+
+        return HttpResponse.json({
+            payment_collection: {
+              ...session,
+              id: session_id,
+            },
+        }, { status: 200 });
     }
   ),
 ];

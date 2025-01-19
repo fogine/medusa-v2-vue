@@ -10,7 +10,7 @@ describe('useProductTypes hook', () => {
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
+    expect(vm.status).toEqual('success');
     expect(vm.data?.product_types).toEqual(productTypes);
   });
 });

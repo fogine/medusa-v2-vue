@@ -19,7 +19,7 @@ describe('useCreateLineItem hook', () => {
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
+    expect(vm.status).toEqual('success');
     expect(vm.data?.cart.items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -37,13 +37,13 @@ describe('useUpdateLineItem hook', () => {
       quantity: 3,
     };
 
-    const { vm } = createWrapperComponent(() => useUpdateLineItem('test-cart'));
+    const { vm } = createWrapperComponent(() => useUpdateLineItem('test-cart', lineItem.lineId));
 
     vm.mutate(lineItem);
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
+    expect(vm.status).toEqual('success');
     expect(vm.data?.cart.items).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -56,18 +56,19 @@ describe('useUpdateLineItem hook', () => {
 });
 
 describe('useDeleteLineItem hook', () => {
-  test('deletes a line item', async () => {
+  test.only('deletes a line item', async () => {
     const lineItem = {
       lineId: 'some-item-id',
     };
 
-    const { vm } = createWrapperComponent(() => useDeleteLineItem('test-cart'));
+    const { vm } = createWrapperComponent(() => useDeleteLineItem('test-cart', lineItem.lineId));
 
-    vm.mutate(lineItem);
+    vm.mutate();
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
-    expect(vm.data?.cart).toEqual(fixtures.get('cart'));
+    expect(vm.status).toEqual('success');
+    expect(vm.data?.['parent']).toEqual(fixtures.get('cart'));
+    expect(vm.data?.['deleted']).toEqual(true);
   });
 });

@@ -1,4 +1,4 @@
-# Medusa Vue
+# Medusa V2 Vue
 
 Vue 3 composables and components for seamless and streamlined interaction with a [Medusa](https://github.com/medusajs/medusa).
 
@@ -11,17 +11,17 @@ The library uses [@tanstack/vue-query](https://tanstack.com/query/v4/docs/vue/ov
 For the core composables run:
 
 ```bash
-npm install @medusa-vue/core
+npm install @medusa-v2-vue/core
 # or
-yarn add @medusa-vue/core
+yarn add @medusa-v2-vue/core
 ```
 
 For the components (WIP :construction_worker:):
 
 ```bash
-npm install @medusa-vue/components
+npm install @medusa-v2-vue/components
 # or
-yarn add @medusa-vue/components
+yarn add @medusa-v2-vue/components
 ```
 
 ## Quick Start
@@ -53,7 +53,7 @@ Plug it in:
 import { createApp } from 'vue';
 import App from './App.vue';
 
-import { createMedusaVueClient } from '@medusa-vue/core';
+import { createMedusaVueClient } from '@medusa-v2-vue/core';
 
 const client = createMedusaVueClient({
   baseUrl: '<YOUR_SERVER_BASE_URL>',
@@ -64,7 +64,7 @@ const app = createApp(App);
 app.use(client).mount('#app');
 ```
 
-The hooks exposed by `medusa-vue` fall into two main categories: queries and mutations.
+The hooks exposed by `medusa-v2-vue` fall into two main categories: queries and mutations.
 
 ### Queries
 
@@ -75,7 +75,7 @@ The hooks exposed by `medusa-vue` fall into two main categories: queries and mut
 <script setup lang="ts">
 import { watch } from 'vue';
 import HelloWorld from './components/HelloWorld.vue';
-import { useProducts } from '@medusa-vue/core';
+import { useProducts } from '@medusa-v2-vue/core';
 
 const { data, error, isLoading } = useProducts();
 </script>
@@ -95,7 +95,7 @@ const { data, error, isLoading } = useProducts();
 
 ```vue
 <script setup lang="ts">
-import { useCreateCart } from '@medusa-vue/core';
+import { useCreateCart } from '@medusa-v2-vue/core';
 
 const createCart = useCreateCart();
 const handleClick = () => {
@@ -116,11 +116,11 @@ The mutation hooks will return exactly what vue-query's [`useMutation`](https://
 
 **_NOTE_**: This is still work in progress and new components will gradually be added!:construction_worker:
 
-If you prefer declarative templates, `@medusa-vue/components` provided (almost) renderless components to use directly in your template and provide data through `slot-props`. This allows for extremely streamlinend and declarative templating:
+If you prefer declarative templates, `@medusa-v2-vue/components` provided (almost) renderless components to use directly in your template and provide data through `slot-props`. This allows for extremely streamlinend and declarative templating:
 
 ```vue
 <script setup lang="ts">
-import { UseProducts } from '@medusa-vue/components';
+import { UseProducts } from '@medusa-v2-vue/components';
 </script>
 
 <template>
@@ -136,7 +136,7 @@ The component also allows to pass down the laoding indicating component via a sl
 
 ```vue
 <script setup lang="ts">
-import { UseProducts } from '@medusa-vue/components';
+import { UseProducts } from '@medusa-v2-vue/components';
 </script>
 
 <template>

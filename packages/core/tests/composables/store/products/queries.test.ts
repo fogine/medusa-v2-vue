@@ -8,7 +8,7 @@ describe('useProducts hook', () => {
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
+    expect(vm.status).toEqual('success');
     expect(vm.data?.products).toEqual(fixtures.list('product'));
   });
 
@@ -22,7 +22,7 @@ describe('useProducts hook', () => {
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
+    expect(vm.status).toEqual('success');
     expect(vm.data?.products).toEqual(fixtures.list('product'));
     expect(vm.data?.limit).toEqual(2);
     expect(vm.data?.offset).toEqual(5);
@@ -37,7 +37,7 @@ describe('useProducts hook', () => {
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
+    expect(vm.status).toEqual('success');
     expect(vm.data?.product).toEqual(fixtures.get('product'));
   });
 });

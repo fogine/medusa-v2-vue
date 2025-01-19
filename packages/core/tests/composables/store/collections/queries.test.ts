@@ -8,7 +8,7 @@ describe('useCollections hook', () => {
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
+    expect(vm.status).toEqual('success');
     expect(vm.data?.collections).toEqual(fixtures.list('product_collection'));
   });
 });
@@ -20,7 +20,7 @@ describe('useCollection hook', () => {
 
     await waitFor(() => vm.isSuccess);
 
-    expect(vm.data?.response.status).toEqual(200);
+    expect(vm.status).toEqual('success');
     expect(vm.data?.collection).toEqual(collection);
   });
 });
