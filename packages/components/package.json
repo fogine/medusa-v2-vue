@@ -1,6 +1,6 @@
 {
   "name": "@medusa-v2-vue/components",
-  "version": "0.4.2",
+  "version": "0.1.0",
   "description": "Vue renderless components to interact with @medusa-js api",
   "keywords": [
     "vue",
@@ -9,8 +9,8 @@
     "query",
     "@medusa"
   ],
-  "author": "Ulrich Krause <hello@raukaute.com>",
-  "homepage": "https://github.com/raukaute/medusa-vue",
+  "author": "Ulrich Krause <hello@raukaute.com>, fogine",
+  "homepage": "https://github.com/fogine/medusa-v2-vue",
   "license": "MIT",
   "main": "dist/index.js",
   "directories": {
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/raukaute/medusa-vue.git"
+    "url": "git+https://github.com/fogine/medusa-v2-vue.git"
   },
   "scripts": {
     "start": "dts watch",
@@ -37,9 +37,9 @@
     "analyze": "size-limit --why"
   },
   "bugs": {
-    "url": "https://github.com/raukaute/medusa-vue/issues"
+    "url": "https://github.com/fogine/medusa-v2-vue/issues"
   },
   "dependencies": {
-    "@medusa-v2-vue/core": "^0.4.2"
+    "@medusa-v2-vue/core": "^0.1.0"
   }
 }

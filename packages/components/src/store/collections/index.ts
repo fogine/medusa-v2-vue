@@ -1,4 +1,4 @@
-import { useCollection, useCollections } from '@medusa-vue/core';
+import { useCollection, useCollections } from '@medusa-v2-vue/core';
 import {
   AllowedComponentProps,
   ComponentCustomProps,

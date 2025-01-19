@@ -1,4 +1,4 @@
-import { useGetCart } from '@medusa-vue/core';
+import { useGetCart } from '@medusa-v2-vue/core';
 import {
   AllowedComponentProps,
   ComponentCustomProps,
