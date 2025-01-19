@@ -1,6 +1,6 @@
 {
   "name": "@medusa-v2-vue/components",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Vue renderless components to interact with @medusa-js api",
   "keywords": [
     "vue",
@@ -40,6 +40,6 @@
     "url": "https://github.com/fogine/medusa-v2-vue/issues"
   },
   "dependencies": {
-    "@medusa-v2-vue/core": "^0.1.0"
+    "@medusa-v2-vue/core": "^0.1.1"
   }
 }
