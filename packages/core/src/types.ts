@@ -1,8 +1,4 @@
-import {
-  ProductVariant as ProductVariantEntity,
-  Region,
-  StoreCartsRes,
-} from '@medusajs/medusa';
+import {StoreProductVariant, StoreRegion} from '@medusajs/types';
 import { QueryKey, UseQueryOptions } from '@tanstack/vue-query';
 
 export type UseQueryOptionsWrapper<
@@ -17,21 +13,9 @@ export type UseQueryOptionsWrapper<
   'queryKey' | 'queryFn' | 'select' | 'refetchInterval'
 >;
 
-// Choose only a subset of the type Region to allow for some flexibility
-export type RegionInfo = Pick<
-  Region,
-  'currency_code' | 'tax_code' | 'tax_rate'
->;
-export type ProductVariant = ConvertDateToString<
-  Omit<ProductVariantEntity, 'beforeInsert'>
->;
-export type ProductVariantInfo = Pick<ProductVariant, 'prices'>;
+export type ProductVariantInfo = Pick<StoreProductVariant, 'calculated_price'>;
 
-type ConvertDateToString<T extends {}> = {
-  [P in keyof T]: T[P] extends Date ? Date | string : T[P];
-};
-
-export type Cart = StoreCartsRes['cart'];
+export type RegionInfo = Pick<StoreRegion, 'currency_code' | 'automatic_taxes'>;
 
 export type TQueryKey<TKey, TListQuery = any, TDetailQuery = string> = {
   all: [TKey];

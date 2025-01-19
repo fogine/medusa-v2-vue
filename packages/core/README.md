@@ -156,47 +156,6 @@ import { UseProducts } from '@medusa-v2-vue/components';
 
 A set of utility functions are also exposed from the library to make your life easier when dealing with displaying money amounts
 
-#### `formatVariantPrice()`
-
-- `formatVariantPrice(params: FormatVariantPriceParams): string`
-
-```typescript
-type FormatVariantPriceParams = {
-  variant: ProductVariantInfo;
-  region: RegionInfo;
-  includeTaxes?: boolean;
-  minimumFractionDigits?: number;
-  maximumFractionDigits?: number;
-  locale?: string;
-};
-
-type ProductVariantInfo = Pick<ProductVariant, 'prices'>;
-
-type RegionInfo = {
-  currency_code: string;
-  tax_code: string;
-  tax_rate: number;
-};
-```
-
-Given a variant and region, will return a string representing the localized amount (i.e: `$19.50`)
-
-The behavior of minimumFractionDigits and maximumFractionDigits is the same as the one explained by MDN [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat). In fact, in order to convert the decimal amount, we use the browser's `Intl.NumberFormat` method.
-
-#### `computeVariantPrice()`
-
-- `computeVariantPrice(params: ComputeVariantPriceParams): number`
-
-```typescript
-type ComputeVariantPriceParams = {
-  variant: ProductVariantInfo;
-  region: RegionInfo;
-  includeTaxes?: boolean;
-};
-```
-
-Determines a variant's price based on the region provided. Returns a decimal number representing the amount.
-
 #### `formatAmount()`
 
 - `formatAmount(params: FormatAmountParams): string`
@@ -213,20 +172,6 @@ type FormatAmountParams = {
 ```
 
 Returns a localized string based on the input params representing the amount (i.e: "$10.99").
-
-#### `computeAmount()`
-
-- `computeAmount(params: ComputeAmountParams): number`
-
-```typescript
-type ComputeAmountParams = {
-  amount: number;
-  region: RegionInfo;
-  includeTaxes?: boolean;
-};
-```
-
-Takes an integer amount, a region, and includeTaxes boolean. Returns a decimal amount including (or excluding) taxes.
 
 ### Credits
 
