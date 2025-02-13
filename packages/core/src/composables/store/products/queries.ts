@@ -28,7 +28,10 @@ export const useProducts = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     productKeys.list(query),
-    () => client.store.product.list(query),
+    (ctx) => {
+        const q = ctx.queryKey[2].query;//we access query like this because it should have all refs unwrapped
+        return client.store.product.list(q)
+    },
     options
   );
   return { data, ...rest } as const;
@@ -45,7 +48,7 @@ export const useProduct = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     productKeys.detail(id),
-    () => client.store.product.retrieve(id),
+    (ctx) => client.store.product.retrieve(ctx.queryKey[2]),
     options
   );
 

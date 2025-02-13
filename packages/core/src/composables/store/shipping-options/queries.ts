@@ -9,29 +9,22 @@ import {
 
 const SHIPPING_OPTION_QUERY_KEY = `shipping_options` as const;
 
-const shippingOptionKey = {
-  ...queryKeysFactory(SHIPPING_OPTION_QUERY_KEY),
-  cart: (cartId: string) => [...shippingOptionKey.all, 'cart', cartId] as const,
-};
+const shippingOptionKey = queryKeysFactory<typeof SHIPPING_OPTION_QUERY_KEY, StoreGetShippingOptionList>(SHIPPING_OPTION_QUERY_KEY);
 
 type ShippingOptionQueryKey = typeof shippingOptionKey;
 
 export const useCartShippingOptions = (
-  cartId: string,
-  query?: StoreGetShippingOptionList,
+  query: StoreGetShippingOptionList,
   options?: UseQueryOptionsWrapper<
     StoreShippingOptionListResponse,
     Error,
-    ReturnType<ShippingOptionQueryKey['cart']>
+    ReturnType<ShippingOptionQueryKey['list']>
   >
 ) => {
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
-    shippingOptionKey.cart(cartId),
-    async () => client.store.fulfillment.listCartOptions({
-        cart_id: cartId,
-        ...query
-    }),
+    shippingOptionKey.list(query),
+    async (ctx) => client.store.fulfillment.listCartOptions(ctx.queryKey[2].query),
     options
   );
   return { data, ...rest } as const;

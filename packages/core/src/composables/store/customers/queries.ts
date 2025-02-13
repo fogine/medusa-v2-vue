@@ -11,8 +11,7 @@ import { queryKeysFactory } from '../../utils/index';
 const CUSTOMERS_QUERY_KEY = `customers` as const;
 
 export const customerKeys = {
-  ...queryKeysFactory(CUSTOMERS_QUERY_KEY),
-  orders: (id: string) => [...customerKeys.detail(id), 'orders'] as const,
+  ...queryKeysFactory<typeof CUSTOMERS_QUERY_KEY, StoreOrderFilters>(CUSTOMERS_QUERY_KEY),
 };
 
 type CustomerQueryKey = typeof customerKeys;
@@ -38,12 +37,12 @@ export const useCustomerOrders = (
   options?: UseQueryOptionsWrapper<
     StoreOrderListResponse,
     Error,
-    ReturnType<CustomerQueryKey['orders']>
+    ReturnType<CustomerQueryKey['list']>
   >
 ) => {
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
-    customerKeys.orders('me'),
+    customerKeys.list(query),
     () => client.store.order.list(query),
     options
   );

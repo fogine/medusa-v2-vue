@@ -26,7 +26,7 @@ export const useCollection = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     collectionKeys.detail(id),
-    () => client.store.collection.retrieve(id),
+    (ctx) => client.store.collection.retrieve(ctx.queryKey[2]),
     options
   );
   return { data, ...rest } as const;
@@ -43,7 +43,7 @@ export const useCollections = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     collectionKeys.list(query),
-    () => client.store.collection.list(query),
+    (ctx) => client.store.collection.list(ctx.queryKey[2].query),
     options
   );
   return { data, ...rest } as const;

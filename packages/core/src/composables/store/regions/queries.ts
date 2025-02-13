@@ -20,13 +20,13 @@ export const useRegions = (
   options?: UseQueryOptionsWrapper<
     StoreRegionListResponse,
     Error,
-    ReturnType<RegionQueryType['lists']>
+    ReturnType<RegionQueryType['list']>
   >
 ) => {
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
-    regionsKey.lists(),
-    () => client.store.region.list(query),
+    regionsKey.list(query),
+    (ctx) => client.store.region.list(ctx.queryKey[2].query),
     options
   );
 
@@ -44,7 +44,7 @@ export const useRegion = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     regionsKey.detail(id),
-    () => client.store.region.retrieve(id),
+    (ctx) => client.store.region.retrieve(ctx.queryKey[2]),
     options
   );
   return { data, ...rest } as const;

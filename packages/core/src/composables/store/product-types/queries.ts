@@ -24,7 +24,7 @@ export const useProductTypes = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery(
     productTypeKeys.list(query),
-    () => client.admin.productType.list(query),
+    (ctx) => client.admin.productType.list(ctx.queryKey[2].query),
     options
   );
   return { data, ...rest } as const;
