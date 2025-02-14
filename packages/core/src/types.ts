@@ -1,5 +1,5 @@
 import {StoreProductVariant, StoreRegion} from '@medusajs/types';
-import { QueryKey, UseQueryOptions } from '@tanstack/vue-query';
+import { QueryKey, UseInfiniteQueryOptions, UseQueryOptions } from '@tanstack/vue-query';
 
 export type UseQueryOptionsWrapper<
   // Return type of queryFn
@@ -10,6 +10,19 @@ export type UseQueryOptionsWrapper<
   TQueryKey extends QueryKey = QueryKey
 > = Omit<
   UseQueryOptions<TQueryFn, E, TQueryFn, TQueryKey>,
+  'queryKey' | 'queryFn' | 'select' | 'refetchInterval'
+>;
+
+
+export type UseInfiniteQueryOptionsWrapper<
+  // Return type of queryFn
+  TQueryFn = unknown,
+  // Type thrown in case the queryFn rejects
+  E = Error,
+  // Query key type
+  TQueryKey extends QueryKey = QueryKey
+> = Omit<
+  UseInfiniteQueryOptions<TQueryFn, E, TQueryFn, TQueryKey>,
   'queryKey' | 'queryFn' | 'select' | 'refetchInterval'
 >;
 
