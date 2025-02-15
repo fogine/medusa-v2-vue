@@ -5,11 +5,8 @@ import {
 import {
   UseMutationOptions,
   useMutation,
-  useQueryClient,
 } from '@tanstack/vue-query';
-import { orderKeys } from './queries';
 import { useMedusa } from '../../../useApi';
-import { buildOptions } from '../../utils/buildOptions';
 
 export const useRequestOrderTransfer = (
   orderId: string,
@@ -21,13 +18,12 @@ export const useRequestOrderTransfer = (
   >
 ) => {
   const { client } = useMedusa();
-  const queryClient = useQueryClient();
 
-  return useMutation(
-    (payload: StoreRequestOrderTransfer) =>
+  return useMutation({
+    mutationFn: (payload: StoreRequestOrderTransfer) =>
       client.store.order.requestTransfer(orderId, payload),
-    buildOptions(queryClient, [orderKeys.all], options)
-  );
+    ...options
+  });
 };
 
 export const useCancelOrderTransfer = (
@@ -40,11 +36,10 @@ export const useCancelOrderTransfer = (
   >
 ) => {
   const { client } = useMedusa();
-  const queryClient = useQueryClient();
 
-  return useMutation(
-    () =>
+  return useMutation({
+    mutationFn: () =>
       client.store.order.cancelTransfer(orderId),
-    buildOptions(queryClient, [orderKeys.all], options)
-  );
+    ...options
+  });
 };

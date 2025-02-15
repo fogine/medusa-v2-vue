@@ -1,6 +1,6 @@
 {
   "name": "@medusa-v2-vue/core",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/core.esm.js",
@@ -73,7 +73,7 @@
   "dependencies": {
     "@medusajs/js-sdk": "^2.3.0",
     "@medusajs/types": "^2.3.0",
-    "@tanstack/vue-query": "^4.14.5",
+    "@tanstack/vue-query": "^5.66.0",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21"
   },

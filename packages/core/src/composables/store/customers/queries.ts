@@ -24,10 +24,11 @@ export const useMeCustomer = (
   >
 ) => {
   const { client } = useMedusa();
-  const { data, ...rest } = useQuery(
-    customerKeys.detail('me'),
-    () => client.store.customer.retrieve(),
-    options
+  const { data, ...rest } = useQuery({
+    queryKey: customerKeys.detail('me'),
+    queryFn: () => client.store.customer.retrieve(),
+    ...options
+  }
   );
   return { data, ...rest } as const;
 };
@@ -41,11 +42,11 @@ export const useCustomerOrders = (
   >
 ) => {
   const { client } = useMedusa();
-  const { data, ...rest } = useQuery(
-    customerKeys.list(query),
-    () => client.store.order.list(query),
-    options
-  );
+  const { data, ...rest } = useQuery({
+    queryKey: customerKeys.list(query),
+    queryFn: () => client.store.order.list(query),
+    ...options
+  });
 
   return { data, ...rest } as const;
 };

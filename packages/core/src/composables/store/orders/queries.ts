@@ -26,10 +26,11 @@ export const useOrder = (
   >
 ) => {
   const { client } = useMedusa();
-  const { data, ...rest } = useQuery(
-    orderKeys.detail(id),
-    (ctx) => client.store.order.retrieve(ctx.queryKey[2]),
-    options
+  const { data, ...rest } = useQuery({
+    queryKey: orderKeys.detail(id),
+    queryFn: (ctx) => client.store.order.retrieve(ctx.queryKey[2]),
+    ...options
+  }
   );
 
   return { data, ...rest } as const;

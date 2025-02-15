@@ -15,10 +15,10 @@ export const useCreateCustomer = (
   >
 ) => {
   const { client } = useMedusa();
-  return useMutation(
-    (data: StoreCreateCustomer) => client.store.customer.create(data),
-    options
-  );
+  return useMutation({
+    mutationFn: (data: StoreCreateCustomer) => client.store.customer.create(data),
+    ...options
+  });
 };
 
 export const useUpdateMe = (
@@ -30,9 +30,9 @@ export const useUpdateMe = (
   >
 ) => {
   const { client } = useMedusa();
-  return useMutation(
-    (data: StoreUpdateCustomer) =>
+  return useMutation({
+    mutationFn: (data: StoreUpdateCustomer) =>
       client.store.customer.update(data),
-    options
-  );
+    ...options
+  });
 };

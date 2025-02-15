@@ -24,11 +24,11 @@ export const useRegions = (
   >
 ) => {
   const { client } = useMedusa();
-  const { data, ...rest } = useQuery(
-    regionsKey.list(query),
-    (ctx) => client.store.region.list(ctx.queryKey[2].query),
-    options
-  );
+  const { data, ...rest } = useQuery({
+    queryKey: regionsKey.list(query),
+    queryFn: (ctx) => client.store.region.list(ctx.queryKey[2].query),
+    ...options
+  });
 
   return { data, ...rest } as const;
 };
@@ -42,10 +42,10 @@ export const useRegion = (
   >
 ) => {
   const { client } = useMedusa();
-  const { data, ...rest } = useQuery(
-    regionsKey.detail(id),
-    (ctx) => client.store.region.retrieve(ctx.queryKey[2]),
-    options
-  );
+  const { data, ...rest } = useQuery({
+    queryKey: regionsKey.detail(id),
+    queryFn: (ctx) => client.store.region.retrieve(ctx.queryKey[2]),
+    ...options
+  });
   return { data, ...rest } as const;
 };

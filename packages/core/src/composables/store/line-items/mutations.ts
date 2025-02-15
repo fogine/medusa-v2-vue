@@ -12,10 +12,10 @@ export const useCreateLineItem = (
   >
 ) => {
   const { client } = useMedusa();
-  return useMutation(
-    (data: StoreAddCartLineItem) => client.store.cart.createLineItem(cartId, data),
-    options
-  );
+  return useMutation({
+    mutationFn: (data: StoreAddCartLineItem) => client.store.cart.createLineItem(cartId, data),
+    ...options
+  });
 };
 
 export const useDeleteLineItem = (
@@ -29,10 +29,10 @@ export const useDeleteLineItem = (
   >
 ) => {
   const { client } = useMedusa();
-  return useMutation(
-    () => client.store.cart.deleteLineItem(cartId, lineItemId),
-    options
-  );
+  return useMutation({
+    mutationFn: () => client.store.cart.deleteLineItem(cartId, lineItemId),
+    ...options
+  });
 };
 
 export const useUpdateLineItem = (
@@ -46,8 +46,8 @@ export const useUpdateLineItem = (
   >
 ) => {
   const { client } = useMedusa();
-  return useMutation(
-    (data: StoreUpdateCartLineItem) => client.store.cart.updateLineItem(cartId, lineItemId, data),
-    options
-  );
+  return useMutation({
+    mutationFn: (data: StoreUpdateCartLineItem) => client.store.cart.updateLineItem(cartId, lineItemId, data),
+    ...options
+  });
 };

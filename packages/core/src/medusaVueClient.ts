@@ -33,9 +33,9 @@ export const createMedusaVueClient = (options: MedusaVueClientProps) => {
         queryClientConfig: {
           defaultOptions: {
             queries: {
-              cacheTime: 500,
+              gcTime: 500,
               refetchOnWindowFocus: false,
-              staleTime: 1000 * 60 * 60 * 24,
+              staleTime: 1000 * 60 * 60,//1h
               retry: 1,
             },
           },

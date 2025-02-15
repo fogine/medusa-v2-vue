@@ -22,7 +22,7 @@ export type UseInfiniteQueryOptionsWrapper<
   // Query key type
   TQueryKey extends QueryKey = QueryKey
 > = Omit<
-  UseInfiniteQueryOptions<TQueryFn, E, TQueryFn, TQueryKey>,
+  UseInfiniteQueryOptions<TQueryFn, E, TQueryFn, TQueryFn, TQueryKey, number>,
   'queryKey' | 'queryFn' | 'select' | 'refetchInterval'
 >;
 

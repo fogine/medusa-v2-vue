@@ -26,13 +26,14 @@ export const useProducts = (
   >
 ) => {
   const { client } = useMedusa();
-  const { data, ...rest } = useQuery(
-    productKeys.list(query),
-    (ctx) => {
+  const { data, ...rest } = useQuery({
+    queryKey: productKeys.list(query),
+    queryFn: (ctx) => {
         const q = ctx.queryKey[2].query;//we access query like this because it should have all refs unwrapped
         return client.store.product.list(q)
     },
-    options
+    ...options
+  }
   );
   return { data, ...rest } as const;
 };
@@ -46,10 +47,11 @@ export const useProduct = (
   >
 ) => {
   const { client } = useMedusa();
-  const { data, ...rest } = useQuery(
-    productKeys.detail(id),
-    (ctx) => client.store.product.retrieve(ctx.queryKey[2]),
-    options
+  const { data, ...rest } = useQuery({
+    queryKey: productKeys.detail(id),
+    queryFn: (ctx) => client.store.product.retrieve(ctx.queryKey[2]),
+    ...options
+  }
   );
 
   return { data, ...rest } as const;
@@ -65,19 +67,18 @@ export const useInfiniteProducts = (
   >
 ) => {
   const { client } = useMedusa();
-  const { data, ...rest } = useInfiniteQuery(
-    productKeys.list(query),
-    (ctx) => {
+  const { data, ...rest } = useInfiniteQuery({
+    queryKey: productKeys.list(query),
+    queryFn: (ctx) => {
         const q = ctx.queryKey[2].query;//we access query like this because it should have all refs unwrapped
         const qq= Object.assign(q ?? {}, {offset: ctx.pageParam ?? 0});
         return client.store.product.list(qq);
     },
-      {
-        getNextPageParam: function (lastPage, _pages) {
-          return lastPage.products.length < lastPage.limit ? undefined : lastPage.offset + lastPage.limit;
-        },
-        ...options,
-      }
-  );
+    initialPageParam: 0,
+    getNextPageParam: function (lastPage:any, _pages:any): number {
+      return lastPage.products.length < lastPage.limit ? undefined : lastPage.offset + lastPage.limit;
+    },
+    ...options
+  });
   return { data, ...rest } as const;
 };

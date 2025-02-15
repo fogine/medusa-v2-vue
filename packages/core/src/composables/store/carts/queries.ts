@@ -22,11 +22,11 @@ export const useGetCart = (
   >
 ) => {
   const { client } = useMedusa();
-  const { data, ...rest } = useQuery(
-    cartKeys.detail(id),
-    (ctx) => client.store.cart.retrieve(ctx.queryKey[2]),
-    options
-  );
+  const { data, ...rest } = useQuery({
+    queryKey: cartKeys.detail(id),
+    queryFn: (ctx) => client.store.cart.retrieve(ctx.queryKey[2]),
+    ...options
+  });
   return { data, ...rest } as const;
 };
 
@@ -39,10 +39,10 @@ export const useGetPaymentProviders = (
   >
 ) => {
   const { client } = useMedusa();
-  const { data, ...rest } = useQuery(
-    cartKeys.paymentProviders(query),
-    (ctx) => client.store.payment.listPaymentProviders(ctx.queryKey[2].query),
-    options
-  );
+  const { data, ...rest } = useQuery({
+    queryKey: cartKeys.paymentProviders(query),
+    queryFn: (ctx) => client.store.payment.listPaymentProviders(ctx.queryKey[2].query),
+    ...options
+  });
   return { data, ...rest } as const;
 };

@@ -22,10 +22,10 @@ export const useCartShippingOptions = (
   >
 ) => {
   const { client } = useMedusa();
-  const { data, ...rest } = useQuery(
-    shippingOptionKey.list(query),
-    async (ctx) => client.store.fulfillment.listCartOptions(ctx.queryKey[2].query),
-    options
-  );
+  const { data, ...rest } = useQuery({
+    queryKey: shippingOptionKey.list(query),
+    queryFn: async (ctx) => client.store.fulfillment.listCartOptions(ctx.queryKey[2].query),
+    ...options
+  });
   return { data, ...rest } as const;
 };

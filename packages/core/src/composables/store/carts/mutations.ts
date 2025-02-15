@@ -11,10 +11,10 @@ export const useCreateCart = (
   >
 ) => {
   const { client } = useMedusa();
-  return useMutation(
-    (data: StoreCreateCart) => client.store.cart.create(data),
-    options
-  );
+  return useMutation({
+    mutationFn: (data: StoreCreateCart) => client.store.cart.create(data),
+    ...options
+  });
 };
 
 export const useUpdateCart = (
@@ -27,10 +27,10 @@ export const useUpdateCart = (
   >
 ) => {
   const { client } = useMedusa();
-  return useMutation(
-    (data: StoreUpdateCart) => client.store.cart.update(cartId, data),
-    options
-  );
+  return useMutation({
+    mutationFn: (data: StoreUpdateCart) => client.store.cart.update(cartId, data),
+    ...options
+  });
 };
 
 export const useCompleteCart = (
@@ -39,7 +39,10 @@ export const useCompleteCart = (
 ) => {
   const { client } = useMedusa();
 
-  return useMutation(() => client.store.cart.complete(cartId), options);
+  return useMutation({
+    mutationFn: () => client.store.cart.complete(cartId),
+    ...options
+  });
 };
 
 export const useCreatePaymentSession = (
@@ -48,7 +51,10 @@ export const useCreatePaymentSession = (
   options?: UseMutationOptions<StorePaymentCollectionResponse, Error, void, unknown>
 ) => {
   const { client } = useMedusa();
-  return useMutation(() => client.store.payment.initiatePaymentSession(cart, paymentOptions), options);
+  return useMutation({
+      mutationFn: () => client.store.payment.initiatePaymentSession(cart, paymentOptions),
+      ...options
+  });
 };
 
 export const useAddShippingMethodToCart = (
@@ -61,9 +67,9 @@ export const useAddShippingMethodToCart = (
   >
 ) => {
   const { client } = useMedusa();
-  return useMutation(
-    (data: StoreAddCartShippingMethods) =>
+  return useMutation({
+    mutationFn: (data: StoreAddCartShippingMethods) =>
       client.store.cart.addShippingMethod(cartId, data),
-    options
-  );
+    ...options
+  });
 };
