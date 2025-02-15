@@ -23,8 +23,8 @@ export type UseInfiniteQueryOptionsWrapper<
   TQueryKey extends QueryKey = QueryKey
 > = Omit<
   UseInfiniteQueryOptions<TQueryFn, E, TQueryFn, TQueryFn, TQueryKey, number>,
-  'queryKey' | 'queryFn' | 'select' | 'refetchInterval'
->;
+  'queryKey' | 'queryFn' | 'select' | 'refetchInterval' | 'getNextPageParam'
+> & Partial<Pick<UseInfiniteQueryOptions<TQueryFn, E, TQueryFn, TQueryFn, TQueryKey, number>, 'getNextPageParam'>>;
 
 export type ProductVariantInfo = Pick<StoreProductVariant, 'calculated_price'>;
 

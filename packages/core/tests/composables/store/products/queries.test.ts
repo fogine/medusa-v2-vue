@@ -1,5 +1,5 @@
 import { fixtures } from '../../../../mocks/data';
-import { useProduct, useProducts } from '../../../../src';
+import { useInfiniteProducts, useProduct, useProducts } from '../../../../src';
 import { createWrapperComponent, waitFor } from '../../../utils';
 
 describe('useProducts hook', () => {
@@ -29,7 +29,7 @@ describe('useProducts hook', () => {
   });
 });
 
-describe('useProducts hook', () => {
+describe('useProduct hook', () => {
   test('success', async () => {
     const { vm } = createWrapperComponent(() =>
       useProduct('prod_01F0YESHQ27Y31CAMD0NV6W9YP')

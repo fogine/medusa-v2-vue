@@ -75,8 +75,8 @@ export const useInfiniteProducts = (
         return client.store.product.list(qq);
     },
     initialPageParam: 0,
-    getNextPageParam: function (lastPage:any, _pages:any): number {
-      return lastPage.products.length < lastPage.limit ? undefined : lastPage.offset + lastPage.limit;
+    getNextPageParam: function (lastPage, _pages): number|null {
+      return lastPage.products.length < lastPage.limit ? null : lastPage.offset + lastPage.limit;
     },
     ...options
   });
