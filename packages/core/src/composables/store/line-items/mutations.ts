@@ -1,9 +1,10 @@
 import {StoreCartResponse, StoreAddCartLineItem, StoreLineItemDeleteResponse, StoreUpdateCartLineItem} from '@medusajs/types';
 import { useMutation, UseMutationOptions } from '@tanstack/vue-query';
 import { useMedusa } from '../../../useApi';
+import {MaybeRefOrGetter, toValue} from 'vue';
 
 export const useCreateLineItem = (
-  cartId: string,
+  cartId: MaybeRefOrGetter<string>,
   options?: UseMutationOptions<
     StoreCartResponse,
     Error,
@@ -13,13 +14,13 @@ export const useCreateLineItem = (
 ) => {
   const { client } = useMedusa();
   return useMutation({
-    mutationFn: (data: StoreAddCartLineItem) => client.store.cart.createLineItem(cartId, data),
+    mutationFn: (data: StoreAddCartLineItem) => client.store.cart.createLineItem(toValue(cartId), data),
     ...options
   });
 };
 
 export const useDeleteLineItem = (
-  cartId: string,
+  cartId: MaybeRefOrGetter<string>,
   lineItemId: string,
   options?: UseMutationOptions<
     StoreLineItemDeleteResponse,
@@ -30,13 +31,13 @@ export const useDeleteLineItem = (
 ) => {
   const { client } = useMedusa();
   return useMutation({
-    mutationFn: () => client.store.cart.deleteLineItem(cartId, lineItemId),
+    mutationFn: () => client.store.cart.deleteLineItem(toValue(cartId), lineItemId),
     ...options
   });
 };
 
 export const useUpdateLineItem = (
-  cartId: string,
+  cartId: MaybeRefOrGetter<string>,
   lineItemId: string,
   options?: UseMutationOptions<
     StoreCartResponse,
@@ -47,7 +48,7 @@ export const useUpdateLineItem = (
 ) => {
   const { client } = useMedusa();
   return useMutation({
-    mutationFn: (data: StoreUpdateCartLineItem) => client.store.cart.updateLineItem(cartId, lineItemId, data),
+    mutationFn: (data: StoreUpdateCartLineItem) => client.store.cart.updateLineItem(toValue(cartId), lineItemId, data),
     ...options
   });
 };

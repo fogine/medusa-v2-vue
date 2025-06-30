@@ -7,9 +7,10 @@ import {
   useMutation,
 } from '@tanstack/vue-query';
 import { useMedusa } from '../../../useApi';
+import {MaybeRefOrGetter, toValue} from 'vue';
 
 export const useRequestOrderTransfer = (
-  orderId: string,
+  orderId: MaybeRefOrGetter<string>,
   options?: UseMutationOptions<
     StoreOrderResponse,
     Error,
@@ -21,13 +22,13 @@ export const useRequestOrderTransfer = (
 
   return useMutation({
     mutationFn: (payload: StoreRequestOrderTransfer) =>
-      client.store.order.requestTransfer(orderId, payload),
+      client.store.order.requestTransfer(toValue(orderId), payload),
     ...options
   });
 };
 
 export const useCancelOrderTransfer = (
-  orderId: string,
+  orderId: MaybeRefOrGetter<string>,
   options?: UseMutationOptions<
     StoreOrderResponse,
     Error,
@@ -39,7 +40,7 @@ export const useCancelOrderTransfer = (
 
   return useMutation({
     mutationFn: () =>
-      client.store.order.cancelTransfer(orderId),
+      client.store.order.cancelTransfer(toValue(orderId)),
     ...options
   });
 };

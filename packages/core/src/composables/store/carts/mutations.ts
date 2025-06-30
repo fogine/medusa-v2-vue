@@ -1,6 +1,7 @@
 import { UseMutationOptions, useMutation } from '@tanstack/vue-query';
 import { useMedusa } from '../../../useApi';
 import {StoreCartResponse, StoreCreateCart, StoreUpdateCart, StoreCompleteCartResponse, StorePaymentCollectionResponse, StoreCart, StoreInitializePaymentSession, StoreAddCartShippingMethods} from '@medusajs/types';
+import {MaybeRefOrGetter, toValue} from 'vue';
 
 export const useCreateCart = (
   options?: UseMutationOptions<
@@ -18,7 +19,7 @@ export const useCreateCart = (
 };
 
 export const useUpdateCart = (
-  cartId: string,
+  cartId: MaybeRefOrGetter<string>,
   options?: UseMutationOptions<
     StoreCartResponse,
     Error,
@@ -28,37 +29,37 @@ export const useUpdateCart = (
 ) => {
   const { client } = useMedusa();
   return useMutation({
-    mutationFn: (data: StoreUpdateCart) => client.store.cart.update(cartId, data),
+    mutationFn: (data: StoreUpdateCart) => client.store.cart.update(toValue(cartId), data),
     ...options
   });
 };
 
 export const useCompleteCart = (
-  cartId: string,
+  cartId: MaybeRefOrGetter<string>,
   options?: UseMutationOptions<StoreCompleteCartResponse, Error, void, unknown>
 ) => {
   const { client } = useMedusa();
 
   return useMutation({
-    mutationFn: () => client.store.cart.complete(cartId),
+    mutationFn: () => client.store.cart.complete(toValue(cartId)),
     ...options
   });
 };
 
 export const useCreatePaymentSession = (
-  cart: StoreCart,
+  cart: MaybeRefOrGetter<StoreCart>,
   paymentOptions: StoreInitializePaymentSession,
   options?: UseMutationOptions<StorePaymentCollectionResponse, Error, void, unknown>
 ) => {
   const { client } = useMedusa();
   return useMutation({
-      mutationFn: () => client.store.payment.initiatePaymentSession(cart, paymentOptions),
+      mutationFn: () => client.store.payment.initiatePaymentSession(toValue(cart), paymentOptions),
       ...options
   });
 };
 
 export const useAddShippingMethodToCart = (
-  cartId: string,
+  cartId: MaybeRefOrGetter<string>,
   options?: UseMutationOptions<
     StoreCartResponse,
     Error,
@@ -69,7 +70,7 @@ export const useAddShippingMethodToCart = (
   const { client } = useMedusa();
   return useMutation({
     mutationFn: (data: StoreAddCartShippingMethods) =>
-      client.store.cart.addShippingMethod(cartId, data),
+      client.store.cart.addShippingMethod(toValue(cartId), data),
     ...options
   });
 };
