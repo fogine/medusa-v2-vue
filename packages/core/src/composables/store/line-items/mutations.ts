@@ -21,7 +21,7 @@ export const useCreateLineItem = (
 
 export const useDeleteLineItem = (
   cartId: MaybeRefOrGetter<string>,
-  lineItemId: string,
+  lineItemId: MaybeRefOrGetter<string>,
   options?: UseMutationOptions<
     StoreLineItemDeleteResponse,
     Error,
@@ -31,14 +31,14 @@ export const useDeleteLineItem = (
 ) => {
   const { client } = useMedusa();
   return useMutation({
-    mutationFn: () => client.store.cart.deleteLineItem(toValue(cartId), lineItemId),
+    mutationFn: () => client.store.cart.deleteLineItem(toValue(cartId), toValue(lineItemId)),
     ...options
   });
 };
 
 export const useUpdateLineItem = (
   cartId: MaybeRefOrGetter<string>,
-  lineItemId: string,
+  lineItemId: MaybeRefOrGetter<string>,
   options?: UseMutationOptions<
     StoreCartResponse,
     Error,
@@ -48,7 +48,7 @@ export const useUpdateLineItem = (
 ) => {
   const { client } = useMedusa();
   return useMutation({
-    mutationFn: (data: StoreUpdateCartLineItem) => client.store.cart.updateLineItem(toValue(cartId), lineItemId, data),
+    mutationFn: (data: StoreUpdateCartLineItem) => client.store.cart.updateLineItem(toValue(cartId), toValue(lineItemId), data),
     ...options
   });
 };
