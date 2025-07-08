@@ -1,1 +1,1 @@
-export * from './queryKeysFactory';
+export * from "./queryKeysFactory";

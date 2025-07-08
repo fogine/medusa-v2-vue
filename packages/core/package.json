@@ -1,6 +1,6 @@
 {
   "name": "@medusa-v2-vue/core",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/core.esm.js",

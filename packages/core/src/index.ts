@@ -1,5 +1,5 @@
-export * from './composables/';
-export * from './helpers';
-export * from './useApi';
+export * from "./composables/";
+export * from "./helpers";
+export * from "./useApi";
 
-export { createMedusaVueClient } from './medusaVueClient';
+export { createMedusaVueClient } from "./medusaVueClient";

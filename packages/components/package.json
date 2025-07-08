@@ -40,6 +40,6 @@
     "url": "https://github.com/fogine/medusa-v2-vue/issues"
   },
   "dependencies": {
-    "@medusa-v2-vue/core": "^0.1.1"
+    "@medusa-v2-vue/core": "^0.2.5"
   }
 }

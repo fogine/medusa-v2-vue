@@ -1,7 +1,16 @@
-import { UseMutationOptions, useMutation } from '@tanstack/vue-query';
-import { useMedusa } from '../../../useApi';
-import {StoreCartResponse, StoreCreateCart, StoreUpdateCart, StoreCompleteCartResponse, StorePaymentCollectionResponse, StoreCart, StoreInitializePaymentSession, StoreAddCartShippingMethods} from '@medusajs/types';
-import {MaybeRefOrGetter, toValue} from 'vue';
+import { UseMutationOptions, useMutation } from "@tanstack/vue-query";
+import { useMedusa } from "../../../useApi";
+import {
+  StoreCartResponse,
+  StoreCreateCart,
+  StoreUpdateCart,
+  StoreCompleteCartResponse,
+  StorePaymentCollectionResponse,
+  StoreCart,
+  StoreInitializePaymentSession,
+  StoreAddCartShippingMethods,
+} from "@medusajs/types";
+import { MaybeRefOrGetter, toValue } from "vue";
 
 export const useCreateCart = (
   options?: UseMutationOptions<
@@ -14,7 +23,7 @@ export const useCreateCart = (
   const { client } = useMedusa();
   return useMutation({
     mutationFn: (data: StoreCreateCart) => client.store.cart.create(data),
-    ...options
+    ...options,
   });
 };
 
@@ -29,8 +38,9 @@ export const useUpdateCart = (
 ) => {
   const { client } = useMedusa();
   return useMutation({
-    mutationFn: (data: StoreUpdateCart) => client.store.cart.update(toValue(cartId), data),
-    ...options
+    mutationFn: (data: StoreUpdateCart) =>
+      client.store.cart.update(toValue(cartId), data),
+    ...options,
   });
 };
 
@@ -42,19 +52,28 @@ export const useCompleteCart = (
 
   return useMutation({
     mutationFn: () => client.store.cart.complete(toValue(cartId)),
-    ...options
+    ...options,
   });
 };
 
 export const useCreatePaymentSession = (
   cart: MaybeRefOrGetter<StoreCart>,
   paymentOptions: StoreInitializePaymentSession,
-  options?: UseMutationOptions<StorePaymentCollectionResponse, Error, void, unknown>
+  options?: UseMutationOptions<
+    StorePaymentCollectionResponse,
+    Error,
+    void,
+    unknown
+  >
 ) => {
   const { client } = useMedusa();
   return useMutation({
-      mutationFn: () => client.store.payment.initiatePaymentSession(toValue(cart), paymentOptions),
-      ...options
+    mutationFn: () =>
+      client.store.payment.initiatePaymentSession(
+        toValue(cart),
+        paymentOptions
+      ),
+    ...options,
   });
 };
 
@@ -71,6 +90,6 @@ export const useAddShippingMethodToCart = (
   return useMutation({
     mutationFn: (data: StoreAddCartShippingMethods) =>
       client.store.cart.addShippingMethod(toValue(cartId), data),
-    ...options
+    ...options,
   });
 };

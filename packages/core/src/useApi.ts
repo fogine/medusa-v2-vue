@@ -1,6 +1,6 @@
-import { inject } from 'vue';
-import { medusaKey } from './injectionSymbols';
-import Medusa from '@medusajs/js-sdk';
+import { inject } from "vue";
+import { medusaKey } from "./injectionSymbols";
+import Medusa from "@medusajs/js-sdk";
 
 /**
  * Returns the medusa Client.

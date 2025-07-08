@@ -1,5 +1,5 @@
-import { isEmpty } from 'lodash';
-import { RegionInfo } from '../types';
+import { isEmpty } from "lodash";
+import { RegionInfo } from "../types";
 
 type FormatAmountParams = {
   amount: number;
@@ -29,11 +29,11 @@ const convertToLocale = ({
   currency_code,
   minimumFractionDigits,
   maximumFractionDigits,
-  locale = 'en-US',
+  locale = "en-US",
 }: ConvertToLocaleParams) => {
   return currency_code && !isEmpty(currency_code)
     ? new Intl.NumberFormat(locale, {
-        style: 'currency',
+        style: "currency",
         currency: currency_code,
         minimumFractionDigits,
         maximumFractionDigits,

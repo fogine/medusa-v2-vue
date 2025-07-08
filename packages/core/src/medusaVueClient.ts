@@ -1,8 +1,8 @@
-import { VueQueryPlugin, VueQueryPluginOptions } from '@tanstack/vue-query';
-import Medusa from '@medusajs/js-sdk';
-import { App } from 'vue';
+import { VueQueryPlugin, VueQueryPluginOptions } from "@tanstack/vue-query";
+import Medusa from "@medusajs/js-sdk";
+import { App } from "vue";
 
-import { medusaKey } from './injectionSymbols';
+import { medusaKey } from "./injectionSymbols";
 
 interface MedusaVueClientProps {
   baseUrl: string;
@@ -35,7 +35,7 @@ export const createMedusaVueClient = (options: MedusaVueClientProps) => {
             queries: {
               gcTime: 500,
               refetchOnWindowFocus: false,
-              staleTime: 1000 * 60 * 60,//1h
+              staleTime: 1000 * 60 * 60, //1h
               retry: 1,
             },
           },

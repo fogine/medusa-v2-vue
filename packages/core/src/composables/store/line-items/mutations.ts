@@ -1,11 +1,17 @@
-import {StoreCartResponse, StoreAddCartLineItem, StoreLineItemDeleteResponse, StoreUpdateCartLineItem, SelectParams} from '@medusajs/types';
-import { useMutation, UseMutationOptions } from '@tanstack/vue-query';
-import { useMedusa } from '../../../useApi';
-import {MaybeRefOrGetter, toValue} from 'vue';
+import {
+  StoreCartResponse,
+  StoreAddCartLineItem,
+  StoreLineItemDeleteResponse,
+  StoreUpdateCartLineItem,
+  SelectParams,
+} from "@medusajs/types";
+import { useMutation, UseMutationOptions } from "@tanstack/vue-query";
+import { useMedusa } from "../../../useApi";
+import { MaybeRefOrGetter, toValue } from "vue";
 
 export const useCreateLineItem = (
   cartId: MaybeRefOrGetter<string>,
-  query?: SelectParams,
+  query?: MaybeRefOrGetter<SelectParams>,
   options?: UseMutationOptions<
     StoreCartResponse,
     Error,
@@ -15,8 +21,9 @@ export const useCreateLineItem = (
 ) => {
   const { client } = useMedusa();
   return useMutation({
-    mutationFn: (data: StoreAddCartLineItem) => client.store.cart.createLineItem(toValue(cartId), data, query),
-    ...options
+    mutationFn: (data: StoreAddCartLineItem) =>
+      client.store.cart.createLineItem(toValue(cartId), data, toValue(query)),
+    ...options,
   });
 };
 
@@ -32,15 +39,16 @@ export const useDeleteLineItem = (
 ) => {
   const { client } = useMedusa();
   return useMutation({
-    mutationFn: () => client.store.cart.deleteLineItem(toValue(cartId), toValue(lineItemId)),
-    ...options
+    mutationFn: () =>
+      client.store.cart.deleteLineItem(toValue(cartId), toValue(lineItemId)),
+    ...options,
   });
 };
 
 export const useUpdateLineItem = (
   cartId: MaybeRefOrGetter<string>,
   lineItemId: MaybeRefOrGetter<string>,
-  query?: SelectParams,
+  query?: MaybeRefOrGetter<SelectParams>,
   options?: UseMutationOptions<
     StoreCartResponse,
     Error,
@@ -50,7 +58,13 @@ export const useUpdateLineItem = (
 ) => {
   const { client } = useMedusa();
   return useMutation({
-    mutationFn: (data: StoreUpdateCartLineItem) => client.store.cart.updateLineItem(toValue(cartId), toValue(lineItemId), data, query),
-    ...options
+    mutationFn: (data: StoreUpdateCartLineItem) =>
+      client.store.cart.updateLineItem(
+        toValue(cartId),
+        toValue(lineItemId),
+        data,
+        toValue(query)
+      ),
+    ...options,
   });
 };

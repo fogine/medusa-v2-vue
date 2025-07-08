@@ -1,10 +1,10 @@
 import {
-    StoreCreateCustomer,
-    StoreCustomerResponse,
-    StoreUpdateCustomer,
-} from '@medusajs/types';
-import { useMutation, UseMutationOptions } from '@tanstack/vue-query';
-import { useMedusa } from '../../../useApi';
+  StoreCreateCustomer,
+  StoreCustomerResponse,
+  StoreUpdateCustomer,
+} from "@medusajs/types";
+import { useMutation, UseMutationOptions } from "@tanstack/vue-query";
+import { useMedusa } from "../../../useApi";
 
 export const useCreateCustomer = (
   options?: UseMutationOptions<
@@ -16,8 +16,9 @@ export const useCreateCustomer = (
 ) => {
   const { client } = useMedusa();
   return useMutation({
-    mutationFn: (data: StoreCreateCustomer) => client.store.customer.create(data),
-    ...options
+    mutationFn: (data: StoreCreateCustomer) =>
+      client.store.customer.create(data),
+    ...options,
   });
 };
 
@@ -33,6 +34,6 @@ export const useUpdateMe = (
   return useMutation({
     mutationFn: (data: StoreUpdateCustomer) =>
       client.store.customer.update(data),
-    ...options
+    ...options,
   });
 };
