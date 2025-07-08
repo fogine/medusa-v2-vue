@@ -8,15 +8,16 @@ import {
     StoreRegionListResponse,
     StoreRegionResponse
 } from '@medusajs/types';
+import {MaybeRefOrGetter, toValue} from 'vue';
 
 const REGIONS_QUERY_KEY = `regions` as const;
 
-const regionsKey = queryKeysFactory<typeof REGIONS_QUERY_KEY, StoreRegionFilters & FindParams>(REGIONS_QUERY_KEY);
+const regionsKey = queryKeysFactory<typeof REGIONS_QUERY_KEY, MaybeRefOrGetter<StoreRegionFilters & FindParams>>(REGIONS_QUERY_KEY);
 
 type RegionQueryType = typeof regionsKey;
 
 export const useRegions = (
-  query?: StoreRegionFilters & FindParams,
+  query?: MaybeRefOrGetter<StoreRegionFilters & FindParams>,
   options?: UseQueryOptionsWrapper<
     StoreRegionListResponse,
     Error,
@@ -26,7 +27,7 @@ export const useRegions = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery({
     queryKey: regionsKey.list(query),
-    queryFn: (ctx) => client.store.region.list(ctx.queryKey[2].query),
+    queryFn: (_ctx) => client.store.region.list(toValue(query)),
     ...options
   });
 
@@ -34,7 +35,7 @@ export const useRegions = (
 };
 
 export const useRegion = (
-  id: string,
+  id: MaybeRefOrGetter<string>,
   options?: UseQueryOptionsWrapper<
     StoreRegionResponse,
     Error,
@@ -44,7 +45,7 @@ export const useRegion = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery({
     queryKey: regionsKey.detail(id),
-    queryFn: (ctx) => client.store.region.retrieve(ctx.queryKey[2]),
+    queryFn: (_ctx) => client.store.region.retrieve(toValue(id)),
     ...options
   });
   return { data, ...rest } as const;

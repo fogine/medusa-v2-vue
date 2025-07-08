@@ -1,5 +1,6 @@
 import {StoreProductVariant, StoreRegion} from '@medusajs/types';
 import { QueryKey, UseInfiniteQueryOptions, UseQueryOptions } from '@tanstack/vue-query';
+import {MaybeRefOrGetter} from 'vue';
 
 export type UseQueryOptionsWrapper<
   // Return type of queryFn
@@ -30,7 +31,7 @@ export type ProductVariantInfo = Pick<StoreProductVariant, 'calculated_price'>;
 
 export type RegionInfo = Pick<StoreRegion, 'currency_code' | 'automatic_taxes'>;
 
-export type TQueryKey<TKey, TListQuery = any, TDetailQuery = string> = {
+export type TQueryKey<TKey, TListQuery = MaybeRefOrGetter<any>, TDetailKey = MaybeRefOrGetter<string>, TDetailQueryType = MaybeRefOrGetter<any>> = {
   all: [TKey];
   lists: () => [...TQueryKey<TKey>['all'], 'list'];
   list: (
@@ -41,6 +42,7 @@ export type TQueryKey<TKey, TListQuery = any, TDetailQuery = string> = {
   ];
   details: () => [...TQueryKey<TKey>['all'], 'detail'];
   detail: (
-    id: TDetailQuery
-  ) => [...ReturnType<TQueryKey<TKey>['details']>, TDetailQuery];
+    id: TDetailKey,
+    query?: TDetailQueryType | undefined
+  ) => [...ReturnType<TQueryKey<TKey>['details']>, TDetailKey, { query: TDetailQueryType | undefined}];
 };

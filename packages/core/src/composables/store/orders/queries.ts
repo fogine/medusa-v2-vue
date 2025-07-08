@@ -5,6 +5,7 @@ import {
 import { useQuery } from '@tanstack/vue-query';
 import { useMedusa } from '../../../useApi';
 import { UseQueryOptionsWrapper } from '../../../types';
+import {MaybeRefOrGetter, toValue} from 'vue';
 
 const ORDERS_QUERY_KEY = `orders` as const;
 
@@ -18,7 +19,7 @@ export const orderKeys = {
 type OrderQueryKey = typeof orderKeys;
 
 export const useOrder = (
-  id: string,
+  id: MaybeRefOrGetter<string>,
   options?: UseQueryOptionsWrapper<
     {order: StoreOrder},
     Error,
@@ -28,7 +29,7 @@ export const useOrder = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery({
     queryKey: orderKeys.detail(id),
-    queryFn: (ctx) => client.store.order.retrieve(ctx.queryKey[2]),
+    queryFn: (_ctx) => client.store.order.retrieve(toValue(id)),
     ...options
   }
   );

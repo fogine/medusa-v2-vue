@@ -1,20 +1,21 @@
 import { queryKeysFactory } from '../../utils/index';
-import { StoreCartResponse, StorePaymentProviderFilters, FindParams, StorePaymentProviderListResponse } from '@medusajs/types';
+import { StoreCartResponse, SelectParams} from '@medusajs/types';
 import { useQuery } from '@tanstack/vue-query';
 import { useMedusa } from '../../../useApi';
 import { UseQueryOptionsWrapper } from '../../../types';
+import {MaybeRefOrGetter, toValue} from 'vue';
 
 const CARTS_QUERY_KEY = `carts` as const;
 
 const cartKeys = {
-  ...queryKeysFactory<typeof CARTS_QUERY_KEY, StorePaymentProviderFilters & FindParams>(CARTS_QUERY_KEY),
-    paymentProviders: (query?: StorePaymentProviderFilters & FindParams) => [...cartKeys.list(), 'payment_providers', { query }, ] as const,
+  ...queryKeysFactory<typeof CARTS_QUERY_KEY, SelectParams>(CARTS_QUERY_KEY),
 };
 
 type CartQueryKey = typeof cartKeys;
 
 export const useGetCart = (
-  id: string,
+  id: MaybeRefOrGetter<string>,
+  query?: MaybeRefOrGetter<SelectParams>,
   options?: UseQueryOptionsWrapper<
     StoreCartResponse,
     Error,
@@ -23,25 +24,8 @@ export const useGetCart = (
 ) => {
   const { client } = useMedusa();
   const { data, ...rest } = useQuery({
-    queryKey: cartKeys.detail(id),
-    queryFn: (ctx) => client.store.cart.retrieve(ctx.queryKey[2]),
-    ...options
-  });
-  return { data, ...rest } as const;
-};
-
-export const useGetPaymentProviders = (
-  query?: StorePaymentProviderFilters & FindParams,
-  options?: UseQueryOptionsWrapper<
-    StorePaymentProviderListResponse,
-    Error,
-    ReturnType<CartQueryKey['paymentProviders']>
-  >
-) => {
-  const { client } = useMedusa();
-  const { data, ...rest } = useQuery({
-    queryKey: cartKeys.paymentProviders(query),
-    queryFn: (ctx) => client.store.payment.listPaymentProviders(ctx.queryKey[2].query),
+    queryKey: cartKeys.detail(id, query),
+    queryFn: (_ctx) => client.store.cart.retrieve(toValue(id), toValue(query)),
     ...options
   });
   return { data, ...rest } as const;

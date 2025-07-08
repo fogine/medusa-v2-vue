@@ -7,11 +7,12 @@ import { useQuery } from '@tanstack/vue-query';
 import { useMedusa } from '../../../useApi';
 import { UseQueryOptionsWrapper } from '../../../types';
 import { queryKeysFactory } from '../../utils/index';
+import {MaybeRefOrGetter, toValue} from 'vue';
 
 const CUSTOMERS_QUERY_KEY = `customers` as const;
 
 export const customerKeys = {
-  ...queryKeysFactory<typeof CUSTOMERS_QUERY_KEY, StoreOrderFilters>(CUSTOMERS_QUERY_KEY),
+  ...queryKeysFactory<typeof CUSTOMERS_QUERY_KEY, MaybeRefOrGetter<StoreOrderFilters>>(CUSTOMERS_QUERY_KEY),
 };
 
 type CustomerQueryKey = typeof customerKeys;
@@ -34,7 +35,7 @@ export const useMeCustomer = (
 };
 
 export const useCustomerOrders = (
-  query: StoreOrderFilters = { limit: 10, offset: 0 },
+  query: MaybeRefOrGetter<StoreOrderFilters> = { limit: 10, offset: 0 },
   options?: UseQueryOptionsWrapper<
     StoreOrderListResponse,
     Error,
@@ -44,7 +45,7 @@ export const useCustomerOrders = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery({
     queryKey: customerKeys.list(query),
-    queryFn: () => client.store.order.list(query),
+    queryFn: () => client.store.order.list(toValue(query)),
     ...options
   });
 

@@ -6,15 +6,16 @@ import { useQuery } from '@tanstack/vue-query';
 import { useMedusa } from '../../../useApi';
 import { UseQueryOptionsWrapper } from '../../../types';
 import { queryKeysFactory } from '../../utils';
+import {MaybeRefOrGetter, toValue} from 'vue';
 
 const PRODUCT_TYPES_QUERY_KEY = `product_types` as const;
 
-export const productTypeKeys = queryKeysFactory(PRODUCT_TYPES_QUERY_KEY);
+export const productTypeKeys = queryKeysFactory<typeof PRODUCT_TYPES_QUERY_KEY, MaybeRefOrGetter<AdminProductTypeListParams>>(PRODUCT_TYPES_QUERY_KEY);
 
 type ProductTypesQueryKeys = typeof productTypeKeys;
 
 export const useProductTypes = (
-  query?: AdminProductTypeListParams,
+  query?: MaybeRefOrGetter<AdminProductTypeListParams>,
   options?: UseQueryOptionsWrapper<
     AdminProductTypeListResponse,
     Error,
@@ -24,7 +25,7 @@ export const useProductTypes = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery({
     queryKey: productTypeKeys.list(query),
-    queryFn: (ctx) => client.admin.productType.list(ctx.queryKey[2].query),
+    queryFn: (_ctx) => client.admin.productType.list(toValue(query)),
     ...options
   }
   );

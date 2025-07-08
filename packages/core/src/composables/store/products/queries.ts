@@ -8,17 +8,18 @@ import { useMedusa } from '../../../useApi';
 
 import { UseQueryOptionsWrapper, UseInfiniteQueryOptionsWrapper } from '../../../types';
 import { queryKeysFactory } from '../../utils/index';
+import {MaybeRefOrGetter, toValue} from 'vue';
 
 const PRODUCTS_QUERY_KEY = `products` as const;
 
 export const productKeys = queryKeysFactory<
   typeof PRODUCTS_QUERY_KEY,
-  StoreProductListParams
+  MaybeRefOrGetter<StoreProductListParams>
 >(PRODUCTS_QUERY_KEY);
 type ProductQueryKey = typeof productKeys;
 
 export const useProducts = (
-  query?: StoreProductListParams,
+  query?: MaybeRefOrGetter<StoreProductListParams>,
   options?: UseQueryOptionsWrapper<
     StoreProductListResponse,
     Error,
@@ -28,9 +29,8 @@ export const useProducts = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery({
     queryKey: productKeys.list(query),
-    queryFn: (ctx) => {
-        const q = ctx.queryKey[2].query;//we access query like this because it should have all refs unwrapped
-        return client.store.product.list(q)
+    queryFn: (_ctx) => {
+        return client.store.product.list(toValue(query))
     },
     ...options
   }
@@ -49,7 +49,7 @@ export const useProduct = (
   const { client } = useMedusa();
   const { data, ...rest } = useQuery({
     queryKey: productKeys.detail(id),
-    queryFn: (ctx) => client.store.product.retrieve(ctx.queryKey[2]),
+    queryFn: (_ctx) => client.store.product.retrieve(toValue(id)),
     ...options
   }
   );
@@ -59,7 +59,7 @@ export const useProduct = (
 
 
 export const useInfiniteProducts = (
-  query?: StoreProductListParams,
+  query?: MaybeRefOrGetter<StoreProductListParams>,
   options?: UseInfiniteQueryOptionsWrapper<
     StoreProductListResponse,
     Error,
@@ -70,9 +70,10 @@ export const useInfiniteProducts = (
   const { data, ...rest } = useInfiniteQuery({
     queryKey: productKeys.list(query),
     queryFn: (ctx) => {
-        const q = ctx.queryKey[2].query;//we access query like this because it should have all refs unwrapped
-        const qq= Object.assign(q ?? {}, {offset: ctx.pageParam ?? 0});
-        return client.store.product.list(qq);
+        const q = Object.assign(toValue(query ?? {}), {
+            offset: ctx.pageParam ?? 0
+        })
+        return client.store.product.list(q);
     },
     initialPageParam: 0,
     getNextPageParam: function (lastPage, _pages): number|null {

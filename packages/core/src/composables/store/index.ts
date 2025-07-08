@@ -1,4 +1,5 @@
 export * from './carts/';
+export * from './payment-providers/';
 export * from './collections/';
 export * from './customers/';
 export * from './line-items/';
