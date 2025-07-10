@@ -1,5 +1,5 @@
 import { VueQueryPlugin, VueQueryPluginOptions } from "@tanstack/vue-query";
-import Medusa from "@medusajs/js-sdk";
+import Medusa, {Config} from "@medusajs/js-sdk";
 import { App } from "vue";
 
 import { medusaKey } from "./injectionSymbols";
@@ -17,6 +17,10 @@ interface MedusaVueClientProps {
   publishableApiKey?: string;
 
   queryClientProviderProps?: VueQueryPluginOptions;
+  auth?: Config['auth'];
+  debug?: Config['debug'];
+  logger?: Config['logger'];
+  globalHeaders?: Config['globalHeaders'];
 }
 
 export const createMedusaVueClient = (options: MedusaVueClientProps) => {
@@ -25,8 +29,11 @@ export const createMedusaVueClient = (options: MedusaVueClientProps) => {
       const medusa = new Medusa({
         baseUrl: options.baseUrl,
         apiKey: options.apiKey,
-        debug: false,
         publishableKey: options.publishableApiKey,
+        debug: options.debug ?? false,
+        ...(options.auth && {auth: options.auth}),
+        ...(options.logger && {logger: options.logger}),
+        ...(options.globalHeaders && {globalHeaders: options.globalHeaders}),
       });
 
       const defaultVueQueryPluginOptions: VueQueryPluginOptions = {

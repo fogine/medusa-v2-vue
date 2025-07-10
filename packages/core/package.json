@@ -1,6 +1,6 @@
 {
   "name": "@medusa-v2-vue/core",
-  "version": "0.2.6",
+  "version": "0.2.8",
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/core.esm.js",
@@ -34,8 +34,8 @@
     "analyze": "size-limit --why"
   },
   "peerDependencies": {
-    "@medusajs/js-sdk": "^2.3.0",
-    "@medusajs/types": "^2.3.0",
+    "@medusajs/js-sdk": "^2.8.6",
+    "@medusajs/types": "^2.8.6",
     "vue": "^3.2.38"
   },
   "husky": {
@@ -71,8 +71,8 @@
     "vue": "^3.2.38"
   },
   "dependencies": {
-    "@medusajs/js-sdk": "^2.3.0",
-    "@medusajs/types": "^2.3.0",
+    "@medusajs/js-sdk": "^2.8.6",
+    "@medusajs/types": "^2.8.6",
     "@tanstack/vue-query": "^5.66.0",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21"
