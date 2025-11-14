@@ -34,8 +34,8 @@
     "analyze": "size-limit --why"
   },
   "peerDependencies": {
-    "@medusajs/js-sdk": "^2.8.6",
-    "@medusajs/types": "^2.8.6",
+    "@medusajs/js-sdk": "^2.11.2",
+    "@medusajs/types": "^2.11.2",
     "vue": "^3.2.38"
   },
   "husky": {
@@ -71,8 +71,8 @@
     "vue": "^3.2.38"
   },
   "dependencies": {
-    "@medusajs/js-sdk": "^2.8.6",
-    "@medusajs/types": "^2.8.6",
+    "@medusajs/js-sdk": "^2.11.2",
+    "@medusajs/types": "^2.11.2",
     "@tanstack/vue-query": "^5.66.0",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21"
