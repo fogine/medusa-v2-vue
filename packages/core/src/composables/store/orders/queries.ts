@@ -1,5 +1,5 @@
 import { queryKeysFactory } from "../../utils/index";
-import { StoreOrder } from "@medusajs/types";
+import { SelectParams, StoreOrder } from "@medusajs/types";
 import { useQuery } from "@tanstack/vue-query";
 import { useMedusa } from "../../../useApi";
 import { UseQueryOptionsWrapper } from "../../../types";
@@ -9,13 +9,13 @@ const ORDERS_QUERY_KEY = `orders` as const;
 
 export const orderKeys = {
   ...queryKeysFactory<typeof ORDERS_QUERY_KEY, any>(ORDERS_QUERY_KEY),
-  cart: (cartId: string) => [...orderKeys.details(), "cart", cartId] as const,
 };
 
 type OrderQueryKey = typeof orderKeys;
 
 export const useOrder = (
   id: MaybeRefOrGetter<string>,
+  query?: MaybeRefOrGetter<SelectParams>,
   options?: UseQueryOptionsWrapper<
     { order: StoreOrder },
     Error,
@@ -24,8 +24,8 @@ export const useOrder = (
 ) => {
   const { client } = useMedusa();
   const { data, ...rest } = useQuery({
-    queryKey: orderKeys.detail(id),
-    queryFn: (_ctx) => client.store.order.retrieve(toValue(id)),
+    queryKey: orderKeys.detail(id, query),
+    queryFn: (ctx) => client.store.order.retrieve(toValue(id), toValue(ctx.queryKey[3].query)),
     ...options,
   });
 
