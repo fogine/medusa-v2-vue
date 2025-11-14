@@ -1,6 +1,6 @@
 import {
   StoreCollectionResponse,
-  StoreCollectionFilters,
+  StoreCollectionListParams,
   StoreCollectionListResponse,
   FindParams,
 } from "@medusajs/types";
@@ -34,7 +34,7 @@ export const useCollection = (
 };
 
 export const useCollections = (
-  query?: MaybeRefOrGetter<StoreCollectionFilters & FindParams>,
+  query?: MaybeRefOrGetter<StoreCollectionListParams & FindParams>,
   options?: UseQueryOptionsWrapper<
     StoreCollectionListResponse,
     Error,
