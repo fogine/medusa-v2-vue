@@ -1,5 +1,5 @@
 import { queryKeysFactory } from "../../utils/index";
-import { SelectParams, StoreOrder } from "@medusajs/types";
+import { SelectParams, StoreOrder, StoreOrderFilters, StoreOrderListResponse } from "@medusajs/types";
 import { useQuery } from "@tanstack/vue-query";
 import { useMedusa } from "../../../useApi";
 import { UseQueryOptionsWrapper } from "../../../types";
@@ -29,5 +29,25 @@ export const useOrder = (
     ...options,
   });
 
+  return { data, ...rest } as const;
+};
+
+export const useOrders = (
+  query?: MaybeRefOrGetter<StoreOrderFilters>,
+  options?: UseQueryOptionsWrapper<
+    StoreOrderListResponse,
+    Error,
+    ReturnType<OrderQueryKey["list"]>
+  >
+) => {
+  const { client } = useMedusa();
+  const { data, ...rest } = useQuery({
+    queryKey: orderKeys.list(query),
+    queryFn: (ctx) => {
+      const q = ctx.queryKey[2].query; //we access query like this because it should have all refs recursivelly unwrapped as opposed to using toValue(query)
+      return client.store.order.list(toValue(q));
+    },
+    ...options,
+  });
   return { data, ...rest } as const;
 };
